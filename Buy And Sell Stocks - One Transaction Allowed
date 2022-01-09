@@ -1,0 +1,26 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn= new Scanner(System.in);
+        int n= scn.nextInt();
+        int[] arr= new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]= scn.nextInt();
+        }
+        int lsf= Integer.MAX_VALUE;// least so far
+        int op=0;// overall profit
+        int pist=0; //profit if sold today
+        
+        for(int i=0;i<n;i++){
+            lsf= Math.min(lsf, arr[i]);
+            pist= arr[i]-lsf;
+            op= Math.max(op, pist);
+        }
+        System.out.print(op);
+    }
+
+}
