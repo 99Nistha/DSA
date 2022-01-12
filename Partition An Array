@@ -1,0 +1,15 @@
+public static void partition(int[] arr, int pivot){
+    //write your code here
+    int i=0;
+    int j=0;
+    int n= arr.length;
+    while(i<n){
+        if(arr[i]>pivot){
+            i++;
+        }else{
+            swap(arr,i,j);
+            j++;
+            i++;
+        }
+    }
+  }
