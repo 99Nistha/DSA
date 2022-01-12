@@ -1,0 +1,8 @@
+  public static void quickSort(int[] arr, int lo, int hi) {
+    //write your code here
+    if(lo>hi) return;
+    int pivot= arr[hi];
+    int p= partition(arr, pivot, lo, hi);
+    quickSort(arr, lo, p-1);
+    quickSort(arr, p+1, hi);
+  }
