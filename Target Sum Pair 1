@@ -1,0 +1,17 @@
+public static void targetSumPair(int[] arr, int target){
+    //write your code here
+    Arrays.sort(arr);
+    int li=0;
+    int ri=arr.length-1;
+    while(li<ri){
+        if(arr[li]+arr[ri]>target){
+            ri--;
+        }else if(arr[li]+arr[ri]<target){
+            li++;
+        }else{
+            System.out.println(arr[li]+", "+arr[ri]);
+            ri--;
+            li++;
+        }
+    }
+  }
