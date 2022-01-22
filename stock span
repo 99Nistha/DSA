@@ -1,0 +1,15 @@
+ public static int[] solve(int[] arr){
+   // solve
+   int n= arr.length;
+   int[] sol= new int[n];
+   Stack<Integer> st= new Stack<>();
+   for(int i=0;i<n;i++){
+       while(st.size()!=0 && arr[st.peek()]<=arr[i]){
+           st.pop();
+       }
+       if(st.size()==0) sol[i]=i+1;
+       else sol[i]= i-st.peek();
+       st.push(i);
+   }
+   return sol;
+ }
