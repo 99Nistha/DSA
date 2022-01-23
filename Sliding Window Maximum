@@ -7,14 +7,10 @@ Stack<Integer> st= new Stack<>();
         st.push(i);
     }
     int j=0;
-    int[] sol= new int[n-k+1];
     for(int i=0;i<=n-k;i++){
-        j=i;
+        if(j<i)j=i;
         while(next[j]<i+k){
             j=next[j];
         }
-        sol[i]=a[j];
-    }
-    for(int i=0;i<sol.length;i++){
-        System.out.println(sol[i]);
+        System.out.println(a[j]);
     }
