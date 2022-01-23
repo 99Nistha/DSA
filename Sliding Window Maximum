@@ -1,0 +1,20 @@
+Stack<Integer> st= new Stack<>();
+    int[] next= new int[n];
+    for(int i=n-1;i>=0;i--){
+        while(st.size()!=0 && a[st.peek()]<=a[i]) st.pop();
+        if(st.size()==0) next[i]= n;
+        else next[i]=st.peek();
+        st.push(i);
+    }
+    int j=0;
+    int[] sol= new int[n-k+1];
+    for(int i=0;i<=n-k;i++){
+        j=i;
+        while(next[j]<i+k){
+            j=next[j];
+        }
+        sol[i]=a[j];
+    }
+    for(int i=0;i<sol.length;i++){
+        System.out.println(sol[i]);
+    }
