@@ -1,0 +1,51 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    // code
+    Stack<Integer> vs= new Stack<>();
+    Stack<String> is= new Stack<>();
+    Stack<String> ps= new Stack<>();
+    
+    for(int i=0;i<exp.length();i++){
+        char ch= exp.charAt(i);
+        if(Character.isDigit(ch)){
+            vs.push(ch-'0');
+            is.push(ch+"");
+            ps.push(ch+"");
+        }else{
+            int vs2= vs.pop();
+            int vs1= vs.pop();
+            int vsval= operation(vs1, vs2, ch);
+            vs.push(vsval);
+            String is2= is.pop();
+            String is1= is.pop();
+            is.push("("+is1+ch+is2+")");
+            String ps2= ps.pop();
+            String ps1= ps.pop();
+            ps.push(ch+ps1+ps2);
+        }
+    }
+    System.out.println(vs.peek());
+    System.out.println(is.peek());
+    System.out.println(ps.peek());
+ }
+ 
+ public static int operation(int v1, int v2, char op){
+     if(op=='+'){
+         return (v1+v2);
+     }else if(op=='-'){
+         return (v1-v2);
+     }else if(op=='*'){
+         return (v1*v2);
+     }else{
+         return (v1/v2);
+     }
+ }
+}
