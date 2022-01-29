@@ -1,0 +1,30 @@
+public static void findCelebrity(int[][] arr) {
+        // if a celebrity is there print it's index (not position), if there is not then
+        // print "none"
+        int n= arr[0].length;
+        Stack<Integer> st=new Stack<>();
+        for(int i=0;i<n;i++){
+            st.push(i);
+        }
+        while(st.size()>=2){
+            int i= st.pop();
+            int j= st.pop();
+            if(arr[i][j]==1){
+                //i know j-> i is not a celeb
+                st.push(j);
+            }else{
+                //i don't know j-> i can be aceleb
+                st.push(i);
+            }
+        }
+        int pot= st.pop();
+        for(int i=0;i<n;i++){
+            if(i!=pot){
+                if(arr[i][pot]==0 || arr[pot][i]==1){
+                    System.out.print("none");
+                    return;
+                }
+            }
+        }
+        System.out.print(pot);
+    }
