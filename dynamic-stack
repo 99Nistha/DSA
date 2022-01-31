@@ -1,0 +1,10 @@
+  if (tos == data.length - 1) {
+        int[] newData= new int[data.length*2];
+        for(int i=0; i<=tos;i++){
+            newData[i]= data[i];
+        }
+        data= newData;
+      }
+        tos++;
+        data[tos] = val;
+    }
