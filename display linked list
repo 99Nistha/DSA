@@ -1,0 +1,20 @@
+    public int size(){
+      // write code here
+      Node temp= head;
+      int count=0;
+      while(temp!=null){
+        temp= temp.next;
+        count++;
+      }
+      return count;
+    }
+
+    public void display(){
+      // write code here
+      Node temp= head;
+      while(temp!=null){
+        System.out.print(temp.data+" ");
+        temp= temp.next;
+      }
+      System.out.println();
+    }
