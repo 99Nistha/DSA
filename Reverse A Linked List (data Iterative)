@@ -1,0 +1,22 @@
+    public Node getNodeAt(int idx){
+      Node temp = head;
+      for (int i = 0; i < idx; i++) {
+        temp = temp.next;
+      }
+      return temp;
+    }
+
+    public void reverseDI() {
+      // write your code here
+      int start= 0;
+      int end= size-1;
+      while(start<end){
+        Node left= getNodeAt(start);
+        Node right= getNodeAt(end);
+        int temp= left.data;
+        left.data= right.data;
+        right.data= temp;
+        start++;
+        end--;
+      }
+    }
