@@ -1,0 +1,14 @@
+public void reversePI(){
+      // write your code here
+        Node prev= null;
+        Node curr= head;
+        Node nextN= head;
+        while(curr!=null){
+          nextN=curr.next;
+          curr.next=prev;
+          prev= curr;
+          curr=nextN;
+        }
+        tail=head;
+        head= prev;
+    }
