@@ -1,0 +1,27 @@
+public static void levelOrderLinewiseZZ(Node node){
+    // write your code here
+    Stack<Node> s= new Stack<>();
+    Stack<Node> cs= new Stack<>();
+    s.push(node);
+    int level=1;
+    while(s.size()>0){
+      node= s.pop();
+      System.out.print(node.data+" ");
+      if(level%2==1){
+        for(Node child: node.children){
+          cs.push(child);
+        }
+      }else{
+        for(int i= node.children.size()-1; i>=0;i--){
+          Node child= node.children.get(i);
+          cs.push(child);
+        }
+      }
+      if(s.size()==0){
+        s=cs;
+        cs= new Stack<>();
+        level++;
+        System.out.println();
+      }
+    }
+  }
