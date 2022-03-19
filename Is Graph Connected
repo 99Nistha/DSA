@@ -1,0 +1,23 @@
+
+      ArrayList<ArrayList<Integer>> comps = new ArrayList<>();
+      // write your code here
+      boolean[] visited= new boolean[vtces];
+      for(int i=0;i<vtces;i++){
+         if(visited[i]==false){
+            ArrayList<Integer> comp= new ArrayList<>();
+            isGraphConn(graph, i, comp, visited);
+            comps.add(comp);
+         }
+      }
+      System.out.println(comps.size()==1);
+   }
+
+   public static void isGraphConn(ArrayList<Edge>[] graph, int src, ArrayList<Integer> comp, boolean[] visited){
+      visited[src]= true;
+      comp.add(src);
+      for(Edge edge: graph[src]){
+         if(visited[edge.nbr]==false){
+            isGraphConn(graph, edge.nbr, comp, visited);
+         }
+      }
+   }
