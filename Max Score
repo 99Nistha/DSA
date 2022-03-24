@@ -1,4 +1,14 @@
-public static int solution(String[] words, int[] farr, int[] score, int idx) {
+class Solution {
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int[] farr = new int[score.length];
+        for (char ch : letters) {
+            farr[ch - 'a']++;
+        }
+        int res = solution(words, farr, score, 0);
+        return res;
+    }
+    
+	public int solution(String[] words, int[] farr, int[] score, int idx) {
 		//write your code here
 		if(idx==words.length) return 0;
 		//not include the word
@@ -26,3 +36,5 @@ public static int solution(String[] words, int[] farr, int[] score, int idx) {
 
 		return Math.max(sno, syes);
 	}
+}
+
