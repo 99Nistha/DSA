@@ -1,0 +1,47 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+
+  static int[] spiralCopy(int[][] inputMatrix) {
+    // your code goes here
+    int numRows= inputMatrix.length;
+    int numCols= inputMatrix[0].length;
+    
+    int topRow=0;
+    int btmRow= numRows-1;
+    int leftCol=0;
+    int rightCol= numCols-1;
+    int[] result= new int[numRows+numCols];
+    int idx=0;
+    
+    while(topRow<=btmRow && leftCol<=rightCol){
+      for(int i=leftCol; i<=rightCol;i++){
+        result[idx]=inputMatrix[topRow][i];
+        idx++;
+        topRow++;
+      }
+      for(int i=topRow; i<=btmRow;i++){
+        result[idx]=inputMatrix[i][rightCol];
+        idx++;
+        rightCol--;
+      }
+      for(int i=rightCol; i>=leftCol;i--){
+        result[idx]=inputMatrix[btmRow][i];
+        idx++;
+        btmRow--;
+      }
+      for(int i=btmRow; i<=topRow;i++){
+        result[idx]=inputMatrix[i][leftCol];
+        idx++;
+        leftCol++;
+      }
+    }
+    return result;
+  }
+
+  public static void main(String[] args) {
+
+  }
+
+}
