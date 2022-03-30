@@ -1,0 +1,8 @@
+int count=0;
+    int rsbn=0;
+    while(n>0){
+      rsbn= (n&-n);
+      n=n-rsbn;
+      count++;
+    }
+    System.out.println(count);
