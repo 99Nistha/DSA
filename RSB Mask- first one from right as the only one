@@ -1,0 +1,2 @@
+int mask= (n & -n);
+    System.out.println(Integer.toBinaryString(mask));
