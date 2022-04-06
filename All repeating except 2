@@ -1,0 +1,22 @@
+int xxory=0;
+   for(int val:arr){
+     xxory^=val;
+   }
+    int rsbm= xxory & -xxory;
+    int x=0;
+    int y=0;
+    for(int val: arr){
+      if((val&rsbm)==0){
+        x=x^val;
+      }else{
+        y^=val;
+      }
+    }
+
+    if(x<y){
+      System.out.println(x);
+      System.out.println(y);
+    }else{
+      System.out.println(y);
+      System.out.println(x);
+    }
