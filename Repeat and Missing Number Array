@@ -1,0 +1,44 @@
+public class Solution {
+    // DO NOT MODIFY THE ARGUMENTS WITH "final" PREFIX. IT IS READ ONLY
+    public int[] repeatedNumber(final int[] arr) {
+        int xxory=0;
+        for(int i=0;i<arr.length;i++){
+            xxory^=arr[i];
+        }
+        for(int i=1;i<=arr.length;i++){
+            xxory^=i;
+        }
+        int rsbm= xxory & -xxory;
+
+        int x=0;
+        int y=0;
+
+        for(int i=0;i<arr.length;i++){
+            if((rsbm & arr[i])==0){
+            x^=arr[i];
+            }else{
+            y^=arr[i];
+            }
+        }
+        for(int i=1;i<=arr.length;i++){
+            if((rsbm & i)==0){
+            x^=i;
+            }else{
+            y^=i;
+            }
+        }
+        int[] res= new int[2];
+        for(int i=0;i<arr.length;i++){
+            if(x==arr[i]){
+                res[0]=x;
+                res[1]= y;
+                break;
+            }else if(y==arr[i]){
+                res[0]=y;
+                res[1]= x;
+                break;
+            }
+        }
+        return res;
+    }
+}
