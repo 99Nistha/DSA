@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isRobotBounded(String ins) {
+        int x=0;
+        int y=0;
+        int dir=0;
+        //dir=0 north;
+        //dir=1 west;
+        //dir=2 south;
+        //dir=3 east;
+        for(int i=0;i<ins.length();i++){
+            if(ins.charAt(i)=='G'){
+                if(dir==0) x--;
+                else if(dir==1) y--;
+                else if(dir==2) x++;
+                else y++;
+            }else if(ins.charAt(i)=='L'){
+                dir++;
+                if(dir==4) dir=0;
+            }else{
+                dir--;
+                if(dir==-1) dir=3;
+            }
+        }
+        if((x==0 && y==0)||dir!=0) return true;
+        return false;
+    }
+}
