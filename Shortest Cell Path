@@ -1,0 +1,37 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+
+	static int shortestCellPath(int[][] grid, int sr, int sc, int tr, int tc) {
+		// your code goes here
+    if(sr==tr && sc==tc) return 0;
+    int length=0;
+    int[][] dir=new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+    Queue<int[]> q= new LinkedList<>();
+    q.add(new int[]{sr, sc});
+    grid[sr][sc]=0;
+    while(!q.isEmpty()){
+      for(int i=0;i<q.size();i++){
+        int[] current= q.remove();
+        int currentRow= current[0];
+        int currentCol= current[1];
+        if(currentRow== tr && currentCol==tc)return length;
+        for(int[] d: dir){
+           int newRow= currentRow+ d[0];
+           int newCol= currentCol+ d[1];
+           if(newRow>=0 && newRow<grid.length && newCol>=0 && newCol<grid[0].length && grid[newRow][newCol]==1){
+             q.add(new int[]{newRow, newCol});
+             grid[newRow][newCol]=0;
+           }
+        } 
+      }
+      length++;
+    }
+    return -1;
+	}
+
+	public static void main(String[] args) {
+	
+	}
+}
