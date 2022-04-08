@@ -1,0 +1,15 @@
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        // Use a lambda comparator to sort the PQ by farthest distance
+        Queue<int[]> maxPQ = new PriorityQueue<>((a, b) -> (b[0]*b[0]+b[1]*b[1])-(a[0]*a[0]+a[1]*a[1]));
+        for(int[] point: points){
+            maxPQ.add(point);
+            if(maxPQ.size()>k) maxPQ.remove();
+        }
+        int[][] res= new int[k][2];
+        while(k-->0){
+            res[k]= maxPQ.remove();
+        }
+        return res;
+    }
+};
