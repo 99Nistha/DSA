@@ -1,0 +1,32 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] arr) {
+        int n= arr.length;
+        Arrays.sort(arr);
+        List<List<Integer>> res= new ArrayList<>();
+        for(int i=0;i<n-2;i++){
+            if(i==0 ||(i>0 && arr[i] != arr[i-1])){
+                int start=i+1, end=n-1, target= 0-arr[i];
+                while(end>start){
+                    if((arr[end]+arr[start])==target){
+                        List<Integer> solution= new ArrayList<>();
+                        solution.add(arr[i]);
+                        solution.add(arr[start]);
+                        solution.add(arr[end]);
+                        res.add(solution);
+                        while(end>start && arr[start]==arr[start+1]){
+                            start++;
+                        }start++;
+                        while(end>start && arr[end]==arr[end-1]){
+                            end--;
+                        }end--;
+                    }else if((arr[end]+arr[start])>target){
+                        end--;
+                    }else{
+                        start++;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
