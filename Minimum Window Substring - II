@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+
+  static String getShortestUniqueSubstring(char[] arr, String str) {
+    // your code goes here
+    int i=-1;
+    int j=-1;
+    int len= str.length();
+    String res="";
+    HashMap<Character,Integer> map= new HashMap<>();
+    while(true){
+      //acquire
+      boolean f1= false;
+      boolean f2= false;
+      while(i<str.length()-1 && arr.length!= map.size()){
+        i++;
+        char ch= str.charAt(i);
+        map.put(ch, map.getOrDefault(ch,0)+1);
+        f1= true;
+      }
+      //collect
+      while(j<i && map.size()==arr.length){
+        if((i-j)<len){
+          res= str.substring(j+1,i+1);
+          len=i-j;
+        }
+        j++;
+        char ch= str.charAt(j);
+        if(map.get(ch)==1){
+          map.remove(ch);
+        }else{
+          map.put(ch, map.get(ch)-1);
+        }
+        f2= true;
+      }
+      if(f1==false && f2==false) break;
+    }
+    return res;
+  }
+
+  public static void main(String[] args) {
+  }
+
+}
