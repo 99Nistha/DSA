@@ -1,0 +1,18 @@
+  static int bracketMatch(String text) {
+    // your code goes here
+    //())(
+    //space o(1)
+    int opening=0;
+    int count=0;
+    for(int i=0;i<text.length();i++){
+      char ch= text.charAt(i);
+      if(ch=='('){
+        opening++;
+      }else if(ch==')'){
+        if(opening==0) count++;
+        else opening--;
+      }
+    }
+    count+=opening; //2
+    return count;
+  }
