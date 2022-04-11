@@ -1,0 +1,28 @@
+  static char[] reverseWords(char[] arr) {
+    // your code goes here
+    if(arr==null || arr.length==0) return new char[0];
+    int start=0;
+    int end= arr.length-1;
+    reverse(start, end, arr); //reverse the entire array
+    start=0;
+    for(int i=0;i<arr.length;i++){
+      char ch= arr[i];
+      if(ch==' '){
+        end= i-1;
+        reverse(start, end, arr);
+        start=i+1;
+      }
+    }
+    reverse(start, arr.length-1, arr);  
+    return arr;
+  }
+  
+  public static void reverse(int start, int end, char[] arr){
+    while(end>start){
+      char temp= arr[start];
+      arr[start]= arr[end];
+      arr[end]= temp;
+      start++;
+      end--;
+    }
+  }
