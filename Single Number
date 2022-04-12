@@ -1,0 +1,21 @@
+class Solution {
+    public int singleNumber(int[] nums) {
+        HashSet<Integer> set= new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            int val= nums[i];
+            if(set.contains(val)) set.remove(val);
+            else set.add(val);
+        }
+        for(int i: set) return i;
+        return 0;
+    }
+}
+
+/*
+int xor= 0;
+for(int i=0;i<nums.length;i++){
+    xor^=nums[i];
+}
+return xor;
+        
+*/
