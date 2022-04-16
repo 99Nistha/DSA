@@ -1,0 +1,20 @@
+class Solution{
+    ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int N){
+        // code here
+        ArrayList<Integer> subset= new ArrayList<>();
+        getSum(0, 0, arr, N, subset);
+        Collections.sort(subset);
+        return subset;
+    }
+    
+    void getSum(int ind, int sum, ArrayList<Integer> arr, int N, ArrayList<Integer> subset){
+        if(ind==N){
+            subset.add(sum);
+            return;
+        }
+        //to take the value at index ind
+        getSum(ind+1, sum+arr.get(ind), arr, N, subset);
+        //not to take the value at index ind
+        getSum(ind+1, sum, arr, N, subset);
+    }
+}
