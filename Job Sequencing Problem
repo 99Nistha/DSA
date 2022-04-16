@@ -1,0 +1,27 @@
+int[] JobScheduling(Job arr[], int n)
+    {
+        // Your code here
+        Arrays.sort(arr,(a,b)-> b.profit-a.profit);
+        int maxD=0;
+        for(int i=0;i<arr.length;i++){
+            maxD= Math.max(arr[i].deadline,maxD);
+        }
+        int[] res= new int[maxD];
+        int count=0;
+        int profit=0;
+        Arrays.fill(res, -1);
+        for(int i=0;i<n;i++){
+            for(int j=arr[i].deadline-1; j>=0;j--){
+                if(res[j]==-1){
+                    res[j]=i;
+                    count++;
+                    profit+=arr[i].profit;
+                    break;
+                }
+            }
+        }
+        int[] result= new int[2];
+        result[0]= count;
+        result[1]= profit;
+        return result;
+    }
