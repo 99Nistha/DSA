@@ -1,0 +1,21 @@
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res= new ArrayList<>();
+        Arrays.sort(candidates);
+        getPairs(0, candidates, target, res, new ArrayList<>());
+        return res;
+    }
+    public void getPairs(int idx, int[] candidates, int target, List<List<Integer>> res, List<Integer> pairs){
+        if(target==0){
+            res.add(new ArrayList<>(pairs));
+            return;
+        }
+        for(int i=idx; i< candidates.length; i++){
+            if(i>idx && candidates[i]== candidates[i-1]) continue;
+            if(target<candidates[i]) break;
+            pairs.add(candidates[i]);
+            getPairs(i+1, candidates, target-candidates[i], res, pairs);
+            pairs.remove(pairs.size()-1);
+        }
+    }
+}
