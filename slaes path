@@ -1,0 +1,21 @@
+  static class SalesPath {
+    int min=Integer.MAX_VALUE;
+    
+    int getCheapestCost(Node rootNode) {
+      if(rootNode==null) return 0;
+      getPath(rootNode, 0);
+      return min;
+    }
+    
+    
+    void getPath(Node rootNode, int count){
+      count+= rootNode.cost;
+      if(rootNode==null){
+        min= Math.min(min, count);
+        return;
+      }
+      for(Node child: rootNode.children){
+        getPath(child, count);
+      }
+    }
+  }
