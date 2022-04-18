@@ -4,8 +4,10 @@ class Solution {
         while(n!=1){//19
             int current= n;
             int sum=0;
-            sum+=(current%10)*(current%10);
-            current/=10;
+            while(current!=0){
+                sum+=(current%10)*(current%10);
+                current/=10;
+            }
             //sum is repeating or not
             if(seen.contains(sum)) return false;
             seen.add(sum);
