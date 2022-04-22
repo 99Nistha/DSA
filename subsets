@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result= new ArrayList<>();
+        findSubsets(result, 0, nums, new ArrayList<>());
+        return result;
+    }
+    
+    public void findSubsets(List<List<Integer>> result, int index, int[] nums, List<Integer> subs){
+        if(index==nums.length){
+            //base case
+            result.add(new ArrayList<>(subs));
+            return;
+        }
+        //not pick
+        findSubsets(result, index+1, nums, subs);
+        //pick
+        subs.add(nums[index]);
+        findSubsets(result, index+1, nums, subs);
+        subs.remove(subs.size()-1);
+    }
+}
+
+/*
+2^n-> pick and not pick
+space-> 2^n+ n-> n
+*/
