@@ -1,0 +1,36 @@
+  /*
+   start-> X;
+   out of bound or 0-> O;
+   left-> L
+   right-> R
+   down-> D
+   up-> U
+  */
+  public static int numDistinctIslands(int[][] arr) {
+    //write your code here
+    if(arr== null || arr.length==0) return 0;
+    HashSet<String> set= new HashSet<>();
+    int m= arr.length;
+    int n= arr[0].length;
+    for(int i=0;i< m;i++){
+        for(int j=0;j<n;j++){
+            if(arr[i][j]==1){
+                String curr= getDisitinctIslands(arr, i, j, m, n, "X");
+                set.add(curr);
+            } 
+        }
+    }
+    return set.size();
+  }
+  
+  public static String getDisitinctIslands(int[][] arr, int i, int j, int m, int n, String direction){
+      if(i<0 || j<0 || i>=m || j>=n || arr[i][j]==0){
+          return "O";
+      }
+      arr[i][j]=0;
+      String up=getDisitinctIslands(arr, i-1, j, m, n, "U");
+      String right=getDisitinctIslands(arr, i, j+1, m, n, "R");
+      String down=getDisitinctIslands(arr, i+1, j, m, n, "D");
+      String left=getDisitinctIslands(arr, i, j-1, m, n, "L");
+      return direction+= up+ right+down+ left;
+  }
