@@ -1,0 +1,30 @@
+//bfs
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int len= graph.length;//10
+        int[] visited= new int[len];
+        Queue<Integer> q= new LinkedList<>();
+        if(len==0) return false;
+        // blue-> 1, red-> -1, none-> 0
+        for(int v=0;v<len;v++){
+            if(visited[v]!=0) continue;
+            q.add(v);
+            visited[v]=1;
+            while(!q.isEmpty()){
+                int size=q.size();//1
+                for(int i=0;i< size;i++){
+                    int curr= q.remove(); //0
+                    for(int val: graph[curr]){
+                        if(visited[val]==0) {
+                            q.add(val); //1
+                            visited[val]= -visited[curr];
+                        }
+                        if(visited[val]==visited[curr]) return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+}
