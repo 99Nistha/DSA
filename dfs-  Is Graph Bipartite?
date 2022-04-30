@@ -1,0 +1,24 @@
+//dfs
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int len= graph.length;
+        int[] visited= new int[len];
+        if(len==0) return false;
+        for(int i=0;i<len;i++){
+            if(visited[i]!=0) continue;
+            if(!dfs(graph, visited, i, 1)) return false;
+        }
+        return true;
+    }
+    
+    public boolean dfs(int[][] graph, int[] visited, int curr, int color){
+        if(visited[curr]!=0){
+            return visited[curr]== color;
+        }
+        visited[curr]=color;
+        for(int val: graph[curr]){
+            if(!dfs(graph, visited, val, -visited[curr])) return false;
+        }
+        return true;
+    }
+}
