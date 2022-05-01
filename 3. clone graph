@@ -1,0 +1,18 @@
+class Solution {
+    public Node cloneGraph(Node node) {
+        if(node==null) return null;
+        HashMap<Integer, Node> map= new HashMap<>();
+        return clone(node, map);
+    }
+    
+    public Node clone(Node node, HashMap<Integer, Node> map){
+        if(map.containsKey(node.val)) return map.get(node.val);
+        //we need to create a copy
+        Node copy= new Node(node.val);
+        map.put(node.val, copy);
+        for(Node nbr: node.neighbors){
+            copy.neighbors.add(clone(nbr, map));
+        }
+        return copy;
+    }
+}
