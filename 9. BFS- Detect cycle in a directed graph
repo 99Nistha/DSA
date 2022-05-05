@@ -1,0 +1,33 @@
+class Solution {
+    public static boolean isCyclic(int N, ArrayList<ArrayList<Integer>> adj) {
+        if(topoSort(N, adj)) return false;
+        return true;
+    }
+    static boolean topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        int[] topo= new int[V];
+        int inDegree[]= new int[V];
+        for(int i=0;i<V;i++){
+            for(int it: adj.get(i)){
+                inDegree[it]++;
+            }
+        }
+        
+        Queue<Integer> q= new LinkedList<>();
+        for(int i=0;i<V;i++){
+            if(inDegree[i]==0) q.add(i);
+        }
+        int ind=0;
+        while(!q.isEmpty()){
+            Integer node= q.remove();
+            ind++;
+            
+            for(Integer it: adj.get(node)){
+                inDegree[it]--;
+                if(inDegree[it]==0) q.add(it);
+            }
+        }
+        return ind==V;
+    }
+} 
