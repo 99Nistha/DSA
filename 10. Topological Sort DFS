@@ -1,0 +1,29 @@
+//dfs-> stack will make sure that the adj comes before the parent
+//and we pop it and give the value in right order
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        Stack<Integer> st= new Stack<>();
+        boolean[] vis= new boolean[V];
+        
+        for(int i=0;i<V;i++){
+            if(!vis[i]) findTopoSort(i, vis, adj, st);
+        }
+        int[] topo= new int[V];
+        int i=0;
+        while(!st.isEmpty()){
+            topo[i++]= st.pop();
+        }
+        return topo;
+    }
+    static void findTopoSort(int node, boolean[] vis, ArrayList<ArrayList<Integer>> adj,Stack<Integer> st){
+        vis[node]= true;
+        for(int it: adj.get(node)){
+            if(!vis[it]) findTopoSort(it, vis, adj, st);
+        }
+        st.push(node);
+    }
+}
