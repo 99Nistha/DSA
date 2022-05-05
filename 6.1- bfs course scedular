@@ -1,36 +1,33 @@
-public class Solution {
+class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        ArrayList[] graph= new ArrayList[numCourses];
+        ArrayList<ArrayList<Integer>> adj= new ArrayList<>();
         int[] degree= new int[numCourses];
-        Queue<Integer> queue= new LinkedList<>();
-        int count=0;
         for(int i=0;i<numCourses;i++){
-            graph[i]= new ArrayList<>();
+            adj.add(new ArrayList<>());
         }
-        
-        for(int i=0;i<prerequisites.length; i++){
+        for(int i=0;i<prerequisites.length;i++){
+            adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
             degree[prerequisites[i][1]]++;
-            graph[prerequisites[i][0]].add(prerequisites[i][1]);
+        }
+        if(isTopoLogicalSort(numCourses, adj, degree))return true;
+        else return false;
+    }
+    
+    public boolean isTopoLogicalSort(int N, ArrayList<ArrayList<Integer>> adj, int[] degree){
+        Queue<Integer> q= new LinkedList<>();
+        for(int i=0;i<N;i++){
+            if(degree[i]==0) q.add(i);
         }
         
-        for(int i=0;i<numCourses;i++){
-            if(degree[i]==0){
-                queue.add(i);
-                count++;
+        int index=0;
+        while(!q.isEmpty()){
+            int curr=q.remove();
+            index++;
+            for(int it: adj.get(curr)){
+                degree[it]--;
+                if(degree[it]==0) q.add(it);
             }
         }
-        while(!queue.isEmpty()){
-            int course= queue.remove();
-            for(int i=0;i<graph[course].size();i++){
-                int pointer= (int)graph[course].get(i);
-                degree[pointer]--;
-                if(degree[pointer]==0){
-                    queue.add(pointer);
-                    count++;
-                }
-            }
-        }
-        return count == numCourses;
-        
-    }    
+        return index==N;
+    }
 }
