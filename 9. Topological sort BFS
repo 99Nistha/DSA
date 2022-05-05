@@ -1,0 +1,38 @@
+
+//bfs-> kahn's algo -> topological sort(linear ordering of vertices)-> is not possible for cyclic graph
+//-> so if topological is possible then no cycle, else cycle
+//2 3 1->  2->3. 
+//u-> v, u should come first then v
+//find the indegree first
+class Solution
+{
+    //Function to return list containing vertices in Topological order. 
+    static int[] topoSort(int V, ArrayList<ArrayList<Integer>> adj) 
+    {
+        // add your code here
+        int[] topo= new int[V];
+        int inDegree[]= new int[V];
+        for(int i=0;i<V;i++){
+            for(int it: adj.get(i)){
+                inDegree[it]++;
+            }
+        }
+        
+        Queue<Integer> q= new LinkedList<>();
+        for(int i=0;i<V;i++){
+            if(inDegree[i]==0) q.add(i);
+        }
+        int ind=0;
+        while(!q.isEmpty()){
+            Integer node= q.remove();
+            topo[ind++]= node;
+            
+            for(Integer it: adj.get(node)){
+                inDegree[it]--;
+                if(inDegree[it]==0) q.add(it);
+            }
+        }
+        return topo;
+    }
+}
+ 
