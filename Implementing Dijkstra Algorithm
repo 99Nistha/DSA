@@ -1,0 +1,37 @@
+class Node{
+    int v;
+    int w8;
+    int getV(){return v;}
+    Node(int v, int w8){
+        this.v= v;
+        this.w8= w8;
+    }
+}
+class Solution
+{
+    //Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+    {
+        // Write your code here
+        int[] dist= new int[V];
+        Arrays.fill(dist, 10000000);
+        PriorityQueue<Node> pq= new PriorityQueue<Node>((a,b)-> (a.w8-b.w8));
+        pq.add(new Node(S, 0));
+        dist[S]= 0;
+        
+        while(pq.size()!=0){
+            Node node= pq.remove();
+            int prevNode= node.getV();
+            for(ArrayList<Integer> it: adj.get(prevNode)){
+                int val= it.get(0);
+                int w8= it.get(1);
+                if(dist[prevNode]+ w8 < dist[val]){
+                    dist[val]= dist[prevNode]+ w8;
+                    pq.add(new Node(val, dist[val]));
+                }
+            }
+        }
+        return dist;
+    }
+}
