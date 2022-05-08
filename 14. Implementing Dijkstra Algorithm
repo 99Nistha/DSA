@@ -34,3 +34,7 @@ class Solution
         return distance;
     }
 }
+/*
+t-> o(logV*E)-> o(ElogV)-> logV bcz of priority queue, and E traversal
+s-> o(n)
+*/
