@@ -1,0 +1,30 @@
+class Solution
+{
+    public int isNegativeWeightCycle(int n, int[][] edges)
+    {
+        //return 1 if cycle exust-> if n-1, and n of traversal gives diff answer than 1
+        int[] dist= new int[n];
+        Arrays.fill(dist, 100000000);
+        dist[0]=0;
+        for(int i=0;i< n-1;i++){
+            for(int[] edge: edges){
+                int src= edge[0];
+                int des= edge[1];
+                int w8= edge[2];
+                if(dist[src]+ w8< dist[des]){
+                    dist[des]= dist[src]+ w8;
+                }
+            }
+        }
+        // now if there is a cycle then in the next loop value will change
+        for(int[] edge: edges){
+            int src= edge[0];
+            int des= edge[1];
+            int w8= edge[2];
+            if(dist[src]+ w8< dist[des]){
+                return 1;
+            }
+        }
+        return 0;
+    }
+}
