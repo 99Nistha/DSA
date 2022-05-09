@@ -1,0 +1,34 @@
+class Node{
+    int node;
+    int w8;
+    public Node(int node, int w8){
+        this.node= node;
+        this.w8= w8;
+    }
+}
+class Solution
+{
+    //Function to find sum of weights of edges of the Minimum Spanning Tree.
+    static int spanningTree(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj) 
+    {
+        // Add your code here
+        boolean[] vis= new boolean[V];
+        PriorityQueue<Node> q= new PriorityQueue<>((a, b)->(a.w8-b.w8));
+        q.add(new Node(0,0));
+        int sum=0;
+        while(!q.isEmpty()){
+            Node cur= q.remove();
+            int u= cur.node;
+            if(vis[u])continue;
+            sum+= cur.w8;
+            vis[u]= true;
+            ArrayList<ArrayList<Integer>> edges= adj.get(u);
+            for(ArrayList<Integer> edge: edges){
+                int vertex= edge.get(0);
+                int w8= edge.get(1);
+                if(!vis[vertex]) q.add(new Node(vertex, w8));
+            }
+        }
+        return sum;
+    }
+}
