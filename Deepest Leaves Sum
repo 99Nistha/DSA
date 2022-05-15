@@ -1,0 +1,31 @@
+class Solution {
+    public int deepestLeavesSum(TreeNode root) {
+        int sum=0;
+        if(root==null) return sum;
+        Queue<TreeNode> q= new LinkedList<>();
+        q.add(root);
+        while(true){
+            List<Integer> temp= new ArrayList<>();
+            int size= q.size();
+            for(int i=0;i<size;i++){
+                TreeNode current= q.remove();
+                temp.add(current.val);
+                if(current.left!=null){
+                    q.add(current.left);
+                }
+                if(current.right!=null){
+                    q.add(current.right);
+                }
+            }
+            if(q.isEmpty()){
+                for(int val: temp){
+                    sum+=val;
+                }
+                return sum;
+            }
+        }
+    }
+}
+/*
+level order traversal
+*/
