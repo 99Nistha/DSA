@@ -1,0 +1,38 @@
+public ArrayList <Integer> bottomView(Node root)
+    {
+        // Code here
+        ArrayList <Integer> list= new ArrayList<>();
+        if(root==null) return list;
+        Queue<Node> q= new LinkedList<>();
+        Map<Integer, Integer> map= new HashMap<>();
+        int firstIndex=0;
+        int lastIndex=0;
+        root.hd=0;
+        q.add(root);
+        while(!q.isEmpty()){
+            int size= q.size();
+            for(int i=0;i<size;i++){
+                Node curr= q.remove();//1
+                int currHd= curr.hd;
+                map.put(currHd, curr.data); // 0->1
+                if(curr.left!=null){
+                    curr.left.hd= currHd-1;
+                    q.add(curr.left);
+                    firstIndex= Math.min(currHd-1, firstIndex);
+                }
+                if(curr.right!=null){
+                    curr.right.hd= currHd+1;
+                    q.add(curr.right);
+                    lastIndex= Math.max(currHd+1, lastIndex);
+                }
+            }
+        }
+        
+        while(firstIndex<=lastIndex){
+            if(map.containsKey(firstIndex)) {
+                list.add(map.get(firstIndex));
+            }
+            firstIndex++;
+        }
+        return list;
+    }
