@@ -1,0 +1,35 @@
+class Solution {
+    //13452
+    public void nextPermutation(int[] A) {
+        if(A==null || A.length<=1) return;
+        int i= A.length-2;//3
+        while(i>=0 && A[i]>=A[i+1])i--;
+        if(i>=0){
+            int j= A.length-1;
+            while(A[j]<=A[i])j--;
+            swap(A, i, j);
+        }
+        reverse(A, i+1, A.length-1);
+    }
+    public void swap(int[] A, int i, int j){
+        int temp= A[i];
+        A[i]= A[j];
+        A[j]= temp;
+    }
+    
+    public void reverse(int[] A, int i, int j){
+        while(i<j) swap(A, i++, j--);
+    }
+}
+/*
+all possible combos, and iterate o(n^2)
+tarverse from back
+1. a[i]<a[i+1] i-> first index the break point  O(n)
+2. a[ind]> a[i] ind-> second index O(n)
+3. swap(a[i], a[ind])
+4. reverse after i -> o(n)
+
+time-> o(n)
+space-> o(1)
+
+*/
