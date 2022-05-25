@@ -1,0 +1,32 @@
+Pascal's Triangle:
+1.  calculate entire pascal triangle: 
+                            1. if it is asked that find the 5th row of pascals triangle, then we have to traverse the previous rows as well
+                            2. time: o(N*N)
+                            3. space: o(N*N)
+2.  calculate value at I,j index row, and col are given
+                            1. use binomial coffeeient
+                            2. NCR
+                            3. time: o(n)
+                            4. space: o(1)
+3. row entire
+                            1. use ncr
+                            2. time:o(n)
+                            3. space: o(n)
+
+case 1:
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res= new ArrayList<>();
+        List<Integer> newRow, prev= null;
+        for(int i=0;i<numRows;i++){
+            newRow= new ArrayList<>(); 
+            for(int j=0;j<=i;j++){
+                if(j==0 || j==i) newRow.add(1);
+                else newRow.add(prev.get(j-1)+ prev.get(j));
+            }
+            prev= newRow;
+            res.add(newRow);
+        }
+        return res;
+    }
+}
