@@ -1,0 +1,19 @@
+Best time to buy a stock
+1. brute force-> o(n^2)
+2. other approch:
+                1. track the min in left
+                2. then find the profit by sub it from min
+                3. if its more than the precious profit then update
+                4. profit= Math.max(profit, price-min);
+                5. time: o(n)
+class Solution {
+    public int maxProfit(int[] prices) {
+        int min= Integer.MAX_VALUE;
+        int profit=0;
+        for(int price: prices){
+            min= Math.min(min, price);
+            profit= Math.max(profit, price-min);
+        }
+        return profit;
+    }
+}
