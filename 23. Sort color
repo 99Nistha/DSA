@@ -1,0 +1,32 @@
+Sort Colors:
+1.  sort-> o(nlogn)
+2. count num of 0,1,2, and put it in the array o(n)+O(n)= o(2n)
+3. dutch national flag algo->
+                                1. O(n)
+                                2. o-> swap-> a[low], a[mid], low++, mid+;
+                                3. 1-> mid++;
+                                4. 2-> swap-> a[mid], a[high], high--;
+
+class Solution {
+    public void sortColors(int[] nums) {
+        int lo=0;
+        int mid=0;
+        int high= nums.length-1;
+        while(mid<=high){
+            if(nums[mid]==0){
+                swap(mid, lo, nums);
+                mid++;
+                lo++;
+            }else if(nums[mid]==1) mid++;
+            else{
+                swap(high, mid, nums);
+                high--;
+            }
+        }
+    }
+    public void swap(int i, int j, int[] arr){
+        int temp= arr[i];
+        arr[i]= arr[j];
+        arr[j]= temp;
+    }
+}
