@@ -1,0 +1,23 @@
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        ArrayList<Integer> arr= new ArrayList<>();
+        int n= seats.length;
+        for(int i=0;i< n; i++){
+            if(seats[i]==1) arr.add(i);
+        }
+        //[0, 4, 6]
+        int prev= arr.get(0);
+        int max=0;
+        int currMax= prev;
+        max= Math.max(max,currMax);
+        for(int i=1;i<arr.size();i++){
+            int curr= arr.get(i);
+            currMax= (curr-prev)/2;
+            max= Math.max(max,currMax);
+            prev= curr;
+        }
+        currMax= (n-1- prev);
+        max= Math.max(max,currMax);
+        return max;
+    }
+}
