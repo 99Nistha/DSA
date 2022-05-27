@@ -1,0 +1,30 @@
+N meetings in 1 room:
+1. use int[] to store starting, ending
+2. sort them on the basis of end time
+3. take the min one first using a priority queue
+4. and so on considering the end of the previous is smaller than the start of the new one
+
+        //start[] = {1,3,0,5,8,5}
+        //end[] =  {2,4,6,7,9,9}
+
+        sort on the basis of end time: pq={{1,2},{3,4},{0,6},{5,7},{8,9},{5,9}}
+
+    public static int maxMeetings(int start[], int end[], int n)
+    {
+        int count=0;
+        PriorityQueue<int[]> pq= new PriorityQueue<>((a,b)->(a[1]-b[1]));
+        for(int i=0;i<n ;i++){
+            pq.add(new int[]{start[i], end[i]});
+        }
+        int prevEndTime=-1;
+        while(!pq.isEmpty()){
+            int[] set= pq.remove();
+            if(set[0]>prevEndTime){
+               count++;
+               prevEndTime= set[1];
+            }
+        }
+        return count;
+    }
+}
+
