@@ -1,0 +1,33 @@
+class Solution
+{
+    //sort on the bsic of max profit
+    //execute it at the very last date of deadline
+    //use an max Deadline array which is initalliy -1;
+    int[] JobScheduling(Job arr[], int n)
+    {
+        // Your code here
+        PriorityQueue<Job> pq= new PriorityQueue<>((a,b)-> (b.profit- a.profit));
+        int maxDeadline= 0;
+        for(Job jobVal: arr){
+            pq.add(jobVal);
+            maxDeadline= Math.max(jobVal.deadline, maxDeadline);
+        }
+        int[] jobPerformed= new int[maxDeadline];
+        Arrays.fill(jobPerformed, -1);
+        int totalJobs=0;
+        int totalProfit=0;
+        while(!pq.isEmpty()){
+            Job curr= pq.remove();
+            int dead= curr.deadline-1;
+            while(jobPerformed[dead]!=-1){
+                dead--;
+                if(dead<0) break;
+            }
+            if(dead<0) continue;
+            totalJobs++;
+            totalProfit+= curr.profit;
+            jobPerformed[dead]=curr.id;
+        }
+        return new int[]{totalJobs, totalProfit};
+    }
+}
