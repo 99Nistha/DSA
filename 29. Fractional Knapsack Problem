@@ -1,0 +1,29 @@
+double fractionalKnapsack(int W, Item arr[], int n) 
+{
+    /*
+    1. sort on the basis of fraction value
+    2. pick the max one
+    3. keep on adding until W reach 0
+    */
+
+    Arrays.sort(arr, (a,b)->{
+        double r1 = (double)a.value / (double)a.weight;
+        double r2 = (double)b.value / (double)b.weight;
+        if(r2>r1)return 1;
+        else return -1;
+    });
+
+    double profit=0.0;
+
+    for(Item I: arr){
+        if(I.weight<=W){
+            W-=I.weight;
+            profit+= I.value;
+        }else{
+            double frac = (double)I.value / (double)I.weight;
+            profit+= (frac*(double)W);
+            break;
+        }
+    }
+    return profit;
+}
