@@ -1,0 +1,20 @@
+N meetings in one room:
+ 
+public static int maxMeetings(int start[], int end[], int n)
+    {
+        PriorityQueue<int[]> pq= new PriorityQueue<>((a,b)-> (a[1]- b[1]));
+        for(int i=0;i<start.length;i++){
+            pq.add(new int[]{start[i], end[i]});
+        }
+        int[] prev= pq.remove();
+        int endPrev= prev[1];
+        int meet=1;
+        while(!pq.isEmpty()){
+            int[] curr= pq.remove();
+            if(curr[0]>endPrev) {
+                meet++;
+                endPrev= curr[1];
+            }
+        }
+        return meet;
+    }
