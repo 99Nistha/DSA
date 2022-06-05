@@ -1,0 +1,18 @@
+class Solution {
+    public int partitionArray(int[] nums, int k) {
+        if(nums== null || nums.length==0) return 0;
+        Arrays.sort(nums);
+        int count=1;
+        int min= Integer.MAX_VALUE;
+        int max= Integer.MIN_VALUE;
+        for(int val: nums){
+            min= Math.min(val, min);
+            max= Math.max(val, max);
+            if(max-min> k){
+                count++;
+                min= max;
+            }
+        }
+        return count;
+    }
+}
