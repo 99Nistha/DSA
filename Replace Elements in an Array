@@ -1,0 +1,12 @@
+class Solution {
+    public int[] arrayChange(int[] nums, int[][] operations) {
+        HashMap<Integer,Integer> store= new HashMap<>();
+        for(int i=0;i<nums.length;i++) store.put(nums[i],i);
+        for(int[] op:operations){
+            int index=store.get(op[0]);
+            nums[index]= op[1];              //replace value to its index
+            store.put(op[1],index);       //update new value with its index
+        }
+        return nums;
+    }
+}
