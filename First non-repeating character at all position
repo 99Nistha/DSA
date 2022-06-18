@@ -1,0 +1,19 @@
+public class Solution {
+    public String solve(String A) {
+        StringBuilder res=new StringBuilder("");
+        HashMap<Character, Integer> map= new HashMap<>();
+        Queue<Character> q= new LinkedList<>();
+        for(int i=0;i<A.length();i++){
+            char ch= A.charAt(i);
+            if(map.containsKey(ch)) map.put(ch,2);
+            else{
+                map.put(ch, 1);
+                q.add(ch);
+            }
+            while(!q.isEmpty() && map.get(q.peek())!=1) q.remove();
+            if(q.isEmpty()) res.append("#");
+            else res.append(q.peek());
+        }
+        return res.toString();
+    }
+}
