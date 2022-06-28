@@ -1,0 +1,27 @@
+class Solution {
+    public int minDeletions(String s) {
+        HashMap<Character, Integer> map= new HashMap<>();
+        for(char ch: s.toCharArray()){
+            if(map.containsKey(ch)) map.put(ch, map.get(ch)+1);
+            else map.put(ch, 1);
+        }
+        int res=0;
+        HashMap<Integer, Boolean> oMap= new HashMap<>();
+        for(int occ: map.values()){
+            if(oMap.containsKey(occ)){
+                while(occ-1>=0){
+                    if(!oMap.containsKey(occ-1)){
+                        oMap.put(occ-1, true);
+                        res++;
+                        break;
+                    }else{
+                        occ--;
+                        res++;
+                    }
+                }
+            }
+            else oMap.put(occ, true);
+        }
+        return res;
+    }
+}
