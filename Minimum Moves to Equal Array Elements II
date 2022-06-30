@@ -1,0 +1,17 @@
+/*
+1. sort
+2. find the moddle element
+3. find the diff b/t mid and evey current index you are on
+4. keep summing up the abs diff
+5. */
+class Solution {
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int mid= nums[nums.length/2];
+        int res=0;
+        for(int num: nums){
+            res+= Math.abs(mid- num);
+        }
+        return res;
+    }
+}
