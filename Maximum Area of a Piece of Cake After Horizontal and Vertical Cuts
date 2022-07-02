@@ -1,0 +1,24 @@
+/*
+1. sort the hCuts and vCuts
+2. now the task is just to find the max diff b/w all cuts, so start with 0, then compare internal cut, and at last check for the last index and the len of the cake
+3. this how you will get the max diff we will do the same for vcuts as well
+4. now to get the biggest area just multiply the max diff of vertical and horizontal together
+*/
+class Solution {
+    public int maxArea(int h, int w, int[] hCuts, int[] vCuts) {
+        Arrays.sort(hCuts);
+        Arrays.sort(vCuts);
+        
+        int hcDiff= hCuts[0]-0;
+        int vcDiff= vCuts[0]-0;
+        
+        for(int i=1; i<hCuts.length;i++) hcDiff= Math.max(hcDiff, hCuts[i]-hCuts[i-1]);
+        hcDiff= Math.max(hcDiff, h- hCuts[hCuts.length-1]);
+        
+        for(int i=1; i<vCuts.length;i++) vcDiff= Math.max(vcDiff, vCuts[i]-vCuts[i-1]);
+        vcDiff= Math.max(vcDiff, w- vCuts[vCuts.length-1]);
+        return(int)(((long)hcDiff*vcDiff)%1000000007);
+    }
+}
+
+
