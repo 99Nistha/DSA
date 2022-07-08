@@ -10,3 +10,18 @@ class Solution {
         return Math.max(dp[0][n-1], dp[1][n-1]);
     }
 }
+
+or 
+class Solution {
+    int findMaxSum(int arr[], int n) {
+        // code here
+        int inc=arr[0];
+        int ex=0;
+        for(int i=1; i<n; i++){
+            int prevInc= inc;
+            inc= arr[i]+ex;
+            ex= Math.max(prevInc, ex);
+        }
+        return Math.max(inc, ex);
+    }
+}
