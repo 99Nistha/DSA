@@ -1,0 +1,22 @@
+class Solution {
+    public List<List<Integer>> generate(int n) {
+        List<List<Integer>> sol= new ArrayList<>();
+        List<Integer> newRow, prev=null;
+        for(int i=0;i<n;i++){
+			// initialize a new row each time
+            newRow= new ArrayList<>();
+			// traverse over the row
+            for(int j=0;j<=i;j++){
+				// if we are at the start or end of the row make it one
+                if(j==0 || j==i) newRow.add(1);
+				// else get the values from the prev col for j-i and j and add them up and save it in the new row
+                else newRow.add(prev.get(j-1)+prev.get(j));
+            }
+			// one we have calculated the new row add it to the resultant/solution arraylist
+            sol.add(newRow);
+			// make sure to mark the newnode and prev, so that we can use it in the furthure iterations
+            prev= newRow;
+        }
+        return sol;
+    }
+}
