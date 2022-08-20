@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int total=0;
+        for(int i:nums){
+            total+=i;
+        }
+        if(total%2!=0) return false;
+        total= total/2;
+        int[][] t= new int[nums.length+1][total+1];
+        for(int[] a:t) Arrays.fill(a, -1);
+        return canPartition(0, t, nums, total)==1?true:false;
+    }
+    
+    public int canPartition(int index, int[][]t, int[] nums, int sum){
+        if(sum==0) return 1;
+        if(index>=nums.length) return 0;
+        if(t[index][sum]!=-1) return t[index][sum];
+        if(nums[index]<=sum){
+            return t[index][sum]= canPartition(index+1, t, nums, sum-nums[index]) | canPartition(index+1, t, nums, sum);
+        }
+        else return t[index][sum]= canPartition(index+1, t, nums, sum);
+    }
+}Partition Equal Subset Sum
