@@ -1,0 +1,31 @@
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        HashMap<String, Integer> map= new HashMap<>();
+        for(String word: words){
+            map.put(word, map.getOrDefault(word, 0)+1);
+        }
+        PriorityQueue<String> pq= new PriorityQueue<>(
+            new Comparator<String> (){
+                public int compare(String word1, String word2){
+                    int fre1= map.get(word1);
+                    int fre2= map.get(word2);
+                    if(fre1==fre2) return word2.compareTo(word1);
+                    return fre1- fre2;
+                }
+            }
+        );
+        for(String word: map.keySet()){
+            pq.add(word);
+            if(pq.size()>k) pq.remove();
+        }
+
+        List<String> list= new ArrayList<>();
+        while(!pq.isEmpty()){
+            list.add(pq.remove());
+        }
+        Collections.reverse(list);
+        return list;
+    }
+}
+//TC: NLogK// quque will be ok max k length
+//SC: O(N)//hashmap
