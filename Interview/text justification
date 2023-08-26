@@ -1,0 +1,46 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result= new ArrayList<>();
+        int i=0, n= words.length;
+        while(i<n){
+            int j=i+1;
+            int lineLength= words[i].length();
+            //the value in a line
+            while(j<n && (lineLength + words[j].length() + (j-i-1))< maxWidth){
+                lineLength+= words[j].length();
+                j++;
+            }
+            int diff= maxWidth-lineLength;// total spaces
+            int numberOfWords= j-i;
+            if(numberOfWords==1 || j>=n) result.add(leftJustify(words, diff, i, j)); // either just one word or its the last line
+            else result.add(middleJustify(words, diff, i, j));
+            i=j;
+        }
+        return result;
+    }
+
+    public String leftJustify(String[] words, int diff, int i, int j){
+        int spacesNeeded= j-i-1;
+        int extraSpaces= diff-spacesNeeded;
+        StringBuilder lineWord= new StringBuilder(words[i]);
+
+        for(int k=i+1; k<j; k++){
+            lineWord.append(' '+words[k]);
+        }     
+        if(extraSpaces>0) lineWord.append(" ".repeat(extraSpaces));
+        return lineWord.toString();
+    }
+
+    public String middleJustify(String[] words, int diff, int i, int j){
+        int spacesNeeded= j-i-1;
+        int spaces= diff/spacesNeeded;
+        int extraSpaces= diff%spacesNeeded;
+        StringBuilder lineWord= new StringBuilder(words[i]);
+
+        for(int k=i+1; k<j; k++){
+            int sp= spaces+ (extraSpaces-- >0?1:0);
+            lineWord.append(" ".repeat(sp)+ words[k]);
+        }
+        return lineWord.toString();
+    }
+}
