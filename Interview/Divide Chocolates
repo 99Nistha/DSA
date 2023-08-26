@@ -1,0 +1,29 @@
+
+public class Solution {
+	public static int getMaximumSweetness(ArrayList<Integer> arr, int k) {
+		// Write your code here.
+		int totalSweetness=0;
+		for(int ar: arr){
+			totalSweetness+=ar;
+		}
+		int high= totalSweetness/(k+1);
+		int low=1;
+		while(low<high){
+			int mid= (low+high)/2;
+			int sum=0;
+			int chunk=0;
+			for(int ar: arr){
+				if(sum+ar>=mid){
+					chunk++;
+					sum=0;
+				}else{
+					sum+=ar;
+				}
+			}
+			if(chunk>=k+1){
+				low= mid+1;
+			}else high= mid-1;
+		}
+		return low;
+	}
+}
