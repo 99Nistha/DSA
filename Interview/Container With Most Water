@@ -1,0 +1,21 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int low= 0;
+        int high= height.length-1;
+        int maxW=0;
+        while(low<high){
+            int h= (high-low);
+            int w= Math.min(height[high], height[low]);
+            int currW= h*w;
+            maxW= Math.max(maxW, currW);
+
+            if(height[high]==height[low]){
+                low++; high--;
+            }
+            else if(height[high]>height[low]) low++;
+            else high--;
+        }
+        return maxW;
+    }
+}
+//tc: o(n): we are going to toch each element
