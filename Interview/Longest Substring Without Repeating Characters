@@ -1,0 +1,50 @@
+```
+using hashset:
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s== null || s.length()==0) return 0;
+        HashSet<Character> set= new HashSet<>();
+        int maxi=0;
+        int i=0, j=0;
+        while(i<s.length()){
+            char ch= s.charAt(i);
+            while(set.contains(ch)){
+                set.remove(s.charAt(j));
+                j++;
+            }
+            maxi= Math.max(maxi, i-j+1);
+            set.add(ch);
+            i++;
+        }
+        return maxi;
+    }
+}
+________________
+using hashmap:
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s== null || s.length()==0) return 0;
+        HashMap<Character, Integer> map= new HashMap<>();
+        map.put(s.charAt(0), 0);
+        int maxi=0;
+        int i=0;
+        for(int j=i+1; j<s.length(); j++){
+            if(!map.containsKey(s.charAt(j))){
+                map.put(s.charAt(j), j);
+            }else{
+                int prevPos= map.get(s.charAt(j));
+                if(prevPos<i){
+                    map.put(s.charAt(j), j);
+                    continue;
+                }
+                maxi= Math.max(maxi, j-i);
+                i= prevPos+1;
+                map.put(s.charAt(j), j);
+            }
+        }
+        maxi= Math.max(maxi, s.length()-i);
+        return maxi;
+    }
+}
+```
