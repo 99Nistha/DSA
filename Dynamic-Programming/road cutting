@@ -1,0 +1,87 @@
+memo:
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+		int[][] dp= new int[n][n+1];
+		return helper(n-1, n, price, dp);
+	}
+	public static int helper(int index, int target, int price[], int[][] dp){
+		if(index==0){
+			return target* price[index];
+		}
+		if(dp[index][target]!=0) return dp[index][target];
+		int notPick= helper(index-1, target, price, dp);
+		int pick= Integer.MIN_VALUE;
+		int road_length= index+1;
+		if(road_length<=target) pick= price[index]+ helper(index, target-road_length, price, dp);
+		return dp[index][target]= Math.max(pick, notPick);
+	}
+}
+
+tabulation
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+		int[][] dp= new int[n][n+1];
+		for(int rod_len=0; rod_len<=n ;rod_len++){
+			dp[0][rod_len]= rod_len*price[0];
+		}
+		for(int index=1; index<n; index++){
+			for(int rod_len=1; rod_len<=n; rod_len++){
+				//not pick
+				int notPick= dp[index-1][rod_len];
+				int pick= Integer.MIN_VALUE;
+				int len_per_index=index+1;
+				if(len_per_index<=rod_len) pick= price[index]+ dp[index][rod_len-len_per_index];
+				dp[index][rod_len]= Math.max(pick, notPick); 
+			}
+		}
+		return dp[n-1][n];
+	}
+}
+
+space opt
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+		int[] dp= new int[n+1];
+		for(int rod_len=0; rod_len<=n ;rod_len++){
+			dp[rod_len]= rod_len*price[0];
+		}
+		for(int index=1; index<n; index++){
+			int[] temp= new int[n+1]; 
+			for(int rod_len=1; rod_len<=n; rod_len++){
+				//not pick
+				int notPick= dp[rod_len];
+				int pick= Integer.MIN_VALUE;
+				int len_per_index=index+1;
+				if(len_per_index<=rod_len) pick= price[index]+ temp[rod_len-len_per_index];
+				temp[rod_len]= Math.max(pick, notPick); 
+			}
+			dp= temp;
+		}
+		return dp[n];
+	}
+}
+
+1d
+public class Solution {
+	public static int cutRod(int price[], int n) {
+		// Write your code here.
+		int[] dp= new int[n+1];
+		for(int rod_len=0; rod_len<=n ;rod_len++){
+			dp[rod_len]= rod_len*price[0];
+		}
+		for(int index=1; index<n; index++){
+			for(int rod_len=1; rod_len<=n; rod_len++){
+				//not pick
+				int notPick= dp[rod_len];
+				int pick= Integer.MIN_VALUE;
+				int len_per_index=index+1;
+				if(len_per_index<=rod_len) pick= price[index]+ dp[rod_len-len_per_index];
+				dp[rod_len]= Math.max(pick, notPick); 
+			}
+		}
+		return dp[n];
+	}
+}

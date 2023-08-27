@@ -1,0 +1,84 @@
+Recusrion:
+class Solution {
+    public int uniquePaths(int m, int n) {
+        return helper(m-1, n-1);
+    }
+    public int helper(int m, int n){
+        if(m==0 && n==0) return 1;
+        if(m<0 || n<0) return 0;
+        return helper(m-1, n)+ helper(m, n-1);
+    }
+}
+
+TC: 2^(M*N)
+SC= total length path -> m-1+n-1
+---------------------------------
+
+Memorization:
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] dp= new int[m][n];
+        return helper(m-1, n-1, dp);
+    }
+    public int helper(int m, int n, int[][]dp){
+        if(m==0 && n==0) return 1;
+        if(m<0 || n<0) return 0;
+        if(dp[m][n]!=0) return dp[m][n];
+        return dp[m][n]= helper(m-1, n, dp)+ helper(m, n-1, dp);
+    }
+}
+
+TC: M*N calls max
+SC: m-1+n-1+ o(N*M)<-DP
+---------------------------------
+
+Tabulation:
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] dp= new int[m][n];
+        for(int i=0;i<m; i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    dp[i][j]=1;
+                    continue;
+                } 
+                int up= 0;
+                int left=0;
+                if(i>0) up= dp[i-1][j];
+                if(j>0) left= dp[i][j-1];
+                dp[i][j]= up+left;
+             }
+        }
+        return dp[m-1][n-1];
+    }
+}
+
+TC: M*N for loops
+SC: M*N, no stack space due to recursive calls
+---------------------------------
+
+Space optimize
+
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[] dp= new int[n];
+        for(int i=0;i<m; i++){
+            int[] temp= new int[n];
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    temp[j]=1;
+                    continue;
+                } 
+                int up= dp[j];
+                int left=0;
+                if(j>0) left= temp[j-1];
+                temp[j]= up+left;
+            }
+            dp= temp;
+        }
+        return dp[n-1];
+    }
+}
+
+TC: o(M*N)
+SC: O(M)

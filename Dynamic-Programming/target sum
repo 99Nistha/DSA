@@ -1,0 +1,140 @@
+//s1-s2= target;
+//s1+s2= sum;
+//s2= sum-s1;
+//s1= target+s2;
+//s2= sum-target-s2
+//s2= (sum-target)/2
+//s1= (target+sum)/2
+
+recursion:
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum=0;
+        for(int i: nums) sum+=i;
+        return countNumberOfWays(nums, (target+sum)/2, nums.length-1);
+    }
+    public int countNumberOfWays(int[] nums, int target, int index){
+        if(index==0){
+            if(nums[0]==0 && target==0) return 2;
+            if(target==0) return 1;
+            if(nums[0]== target) return 1;
+            return 0; 
+        }
+        //not pick
+        int notPick= countNumberOfWays(nums, target, index-1);
+        //pick
+        int pick=0;
+        if(nums[index]<=target) pick= countNumberOfWays(nums, target-nums[index], index-1);
+        return pick+notPick;
+    }
+}
+
+memorization
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum=0;
+        for(int i: nums) sum+=i;
+        int t= (target+sum)/2;
+        int[][] dp= new int[nums.length][t+1];
+        return countNumberOfWays(nums, t, nums.length-1, dp);
+    }
+    public int countNumberOfWays(int[] nums, int target, int index, int[][] dp){
+        if(index==0){
+            if(nums[0]==0 && target==0) return 2;
+            if(target==0) return 1;
+            if(nums[0]== target) return 1;
+            return 0; 
+        }
+        if(dp[index][target]!=0) return dp[index][target];
+        //not pick
+        int notPick= countNumberOfWays(nums, target, index-1, dp);
+        //pick
+        int pick=0;
+        if(nums[index]<=target) pick= countNumberOfWays(nums, target-nums[index], index-1, dp);
+        return dp[index][target]= pick+notPick;
+    }
+}
+
+tabulation
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum=0;
+        for(int i: nums) sum+=i;
+        if(sum<target || (sum-target)%2!=0) return 0;
+        int t= (sum-target)/2;
+        int[][] dp= new int[nums.length][t+1];
+
+        dp[0][0]=1;
+		if(nums[0]<=t) dp[0][nums[0]]= 1;
+        if(nums[0]==0) dp[0][0]=2; 
+
+        for(int row=1;row<nums.length; row++){
+            for(int col=0; col<=t; col++){
+                //not pick
+                int notPick= dp[row-1][col];
+                //pick
+                int pick=0;
+                if(nums[row]<=col) pick= dp[row-1][col-nums[row]];
+                dp[row][col]= pick+ notPick;
+            }
+        }
+        return dp[nums.length-1][t];
+    }
+}
+
+space op:
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum=0;
+        for(int i: nums) sum+=i;
+        if(sum<target || (sum-target)%2!=0) return 0;
+        int t= (sum-target)/2;
+        int[] dp= new int[t+1];
+
+        dp[0]=1;
+		if(nums[0]<=t) dp[nums[0]]= 1;
+        if(nums[0]==0) dp[0]=2; 
+
+        for(int row=1;row<nums.length; row++){
+            int[] temp= new int[t+1];
+            for(int col=0; col<=t; col++){
+                //not pick
+                int notPick= dp[col];
+                //pick
+                int pick=0;
+                if(nums[row]<=col) pick= dp[col-nums[row]];
+                temp[col]= pick+ notPick;
+            }
+            dp= temp;
+        }
+        return dp[t];
+    }
+}
+
+even more space op: 1d
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        int sum=0;
+        for(int i: nums) sum+=i;
+        if(sum<target || (sum-target)%2!=0) return 0;
+        int t= (sum-target)/2;
+        int[] dp= new int[t+1];
+
+        dp[0]=1;
+		if(nums[0]<=t) dp[nums[0]]= 1;
+        if(nums[0]==0) dp[0]=2; 
+
+        for(int row=1;row<nums.length; row++){
+            for(int col=t; col>=0; col--){
+                //not pick
+                int notPick= dp[col];
+                //pick
+                int pick=0;
+                if(nums[row]<=col) pick= dp[col-nums[row]];
+                dp[col]= pick+ notPick;
+            }
+        }
+        return dp[t];
+    }
+}
+

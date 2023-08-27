@@ -1,0 +1,119 @@
+recursive:
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int len1= s.length();
+        int len2= p.length();
+        return wildCardMatching(len1-1, len2-1, s, p);
+    }
+    public boolean wildCardMatching(int index1, int index2, String s, String p){
+        if(index1<0 && index2<0) return true; // both got exausted
+        if(index2<0 && index1>=0) return false; // nothing left to compare in p
+        if(index2>=0 && index1<0){ // empty string still can be compared if its a *
+            for(int i=0; i<=index2; i++){
+                if(p.charAt(i)!='*') return false;
+            }
+            return true;
+        }
+        //matching
+        if(s.charAt(index1)== p.charAt(index2) || p.charAt(index2)== '?'){
+            return wildCardMatching(index1-1, index2-1, s, p);
+        }
+        //not matching
+        if(p.charAt(index2)== '*'){
+            boolean startAsEmpty= wildCardMatching(index1, index2-1, s, p);
+            boolean startAsSingleCharAndStillContinue= wildCardMatching(index1-1, index2, s, p);
+            return startAsEmpty|| startAsSingleCharAndStillContinue;
+        }
+        return false;
+    }
+}
+
+memo:
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int len1= s.length();
+        int len2= p.length();
+        int[][] dp= new int[len1][len2];
+        return wildCardMatching(len1-1, len2-1, s, p, dp);
+    }
+    public boolean wildCardMatching(int index1, int index2, String s, String p, int[][] dp){
+        if(index1<0 && index2<0) return true; // both got exausted
+        if(index2<0 && index1>=0) return false; // nothing left to compare in p
+        if(index2>=0 && index1<0){ // empty string still can be compared if its a *
+            for(int i=0; i<=index2; i++){
+                if(p.charAt(i)!='*') return false;
+            }
+            return true;
+        }
+        if(dp[index1][index2]!=0){
+            if(dp[index1][index2]==1) return true;
+            else return false;
+        }
+        //matching
+        if(s.charAt(index1)== p.charAt(index2) || p.charAt(index2)== '?'){
+            boolean result= wildCardMatching(index1-1, index2-1, s, p, dp);
+            dp[index1][index2]= result? 1:-1;
+            return result;
+        }
+        //not matching
+        if(p.charAt(index2)== '*'){
+            boolean startAsEmpty= wildCardMatching(index1, index2-1, s, p, dp);
+            boolean startAsSingleCharAndStillContinue= wildCardMatching(index1-1, index2, s, p, dp);
+            boolean result= startAsEmpty|| startAsSingleCharAndStillContinue;
+            dp[index1][index2]= result? 1:-1;
+            return result;
+        }
+        return false;
+    }
+}
+
+tabulation:
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int len1= s.length();
+        int len2= p.length();
+        boolean[][] dp= new boolean[len1+1][len2+1];
+        dp[0][0]= true;
+        for(int i=1; i<=len2; i++){
+            if(p.charAt(i-1)!='*') break;
+            dp[0][i]= true;
+        }
+        for(int index1=1; index1<=len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                if(s.charAt(index1-1)== p.charAt(index2-1)|| p.charAt(index2-1)=='?'){
+                    dp[index1][index2]= dp[index1-1][index2-1];
+                }else if(p.charAt(index2-1)=='*'){
+                    dp[index1][index2]= dp[index1][index2-1]|| dp[index1-1][index2];
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+
+space optimization:
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int len1= s.length();
+        int len2= p.length();
+        boolean[] dp= new boolean[len2+1];
+        dp[0]= true;
+        for(int i=1; i<=len2; i++){
+            if(p.charAt(i-1)!='*') break;
+            dp[i]= true;
+        }
+        for(int index1=1; index1<=len1; index1++){
+            boolean[] temp= new boolean[len2+1];
+            for(int index2=1; index2<=len2; index2++){
+                if(s.charAt(index1-1)== p.charAt(index2-1)|| p.charAt(index2-1)=='?'){
+                    temp[index2]= dp[index2-1];
+                }else if(p.charAt(index2-1)=='*'){
+                    temp[index2]= temp[index2-1]|| dp[index2];
+                }
+            }
+            dp= temp;
+        }
+        return dp[len2];
+    }
+}
+

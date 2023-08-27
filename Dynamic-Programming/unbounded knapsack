@@ -1,0 +1,21 @@
+class Solution{
+    static int knapSack(int n, int w, int profit[], int weight[])
+    {
+        // code here
+        int[] dp= new int[w+1];
+        for(int i=0;i<=w; i++){
+            if(weight[0]<=i) dp[i]= (i/weight[0])*profit[0];
+        }
+        for(int row=1;row<n; row++){
+            for(int col=0; col<=w; col++){
+                //not pick
+                int notPick= dp[col];
+                //pick
+                int pick= Integer.MIN_VALUE;
+                if(weight[row]<=col) pick= profit[row]+ dp[col-weight[row]];
+                dp[col]= Math.max(pick,notPick);
+            }
+        }
+        return dp[w];
+    }
+}

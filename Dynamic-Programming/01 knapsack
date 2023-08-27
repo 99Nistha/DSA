@@ -1,0 +1,109 @@
+recursive
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+            return helper(weight.length-1, maxWeight, weight, value);
+    }
+    static int helper(int index, int wt, int[] weight, int[] value){
+        if(wt==0) return 0;
+        if(index==0){
+            if(weight[index]<=wt) return value[index];
+            else return 0;
+        }
+        //not take
+        int notPick= 0+ helper(index-1, wt, weight, value);
+        //pick
+        int pick= Integer.MIN_VALUE;
+        if(weight[index]<=wt)
+            pick= value[index]+ helper(index-1, wt- weight[index], weight, value);
+        return Math.max(notPick, pick);
+    }
+}
+
+Memo
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+        int[][] dp= new int[weight.length][maxWeight+1];
+        return helper(weight.length-1, maxWeight, weight, value, dp);
+    }
+    static int helper(int index, int wt, int[] weight, int[] value, int[][] dp){
+        if(wt==0) return 0;
+        if(index==0){
+            if(weight[index]<=wt) return value[index];
+            else return 0;
+        }
+        if(dp[index][wt]!=0) return dp[index][wt];
+        //not take
+        int notPick= 0+ helper(index-1, wt, weight, value, dp);
+        //pick
+        int pick= Integer.MIN_VALUE;
+        if(weight[index]<=wt)
+            pick= value[index]+ helper(index-1, wt- weight[index], weight, value, dp);
+        return dp[index][wt]= Math.max(notPick, pick);
+    }
+}
+
+tabulation
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+        int[][] dp= new int[weight.length][maxWeight+1];
+        for(int i=weight[0];i<=maxWeight; i++){
+            dp[0][i]= value[0];
+        }
+        for(int el=1;el<weight.length; el++){
+            for(int wt=1; wt<=maxWeight; wt++){
+                //not pick
+                int notPick= 0+ dp[el-1][wt];
+                // pick
+                int pick= Integer.MIN_VALUE;
+                if(weight[el]<=wt) pick= value[el]+ dp[el-1][wt-weight[el]];
+                dp[el][wt]= Math.max(pick, notPick);
+            }
+        }
+        return dp[weight.length-1][maxWeight];
+    }
+}
+
+space opt
+
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+        int[] dp= new int[maxWeight+1];
+        for(int i=weight[0];i<=maxWeight; i++){
+            dp[i]= value[0];
+        }
+        for(int el=1;el<weight.length; el++){
+            int[] temp= new int[maxWeight+1];
+            for(int wt=1; wt<=maxWeight; wt++){
+                //not pick
+                int notPick= 0+ dp[wt];
+                // pick
+                int pick= Integer.MIN_VALUE;
+                if(weight[el]<=wt) pick= value[el]+ dp[wt-weight[el]];
+                temp[wt]= Math.max(pick, notPick);
+            }
+            dp= temp;
+        }
+        return dp[maxWeight];
+    }
+}
+
+even more space op
+public class Solution{
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+        int[] dp= new int[maxWeight+1];
+        for(int i=weight[0];i<=maxWeight; i++){
+            dp[i]= value[0];
+        }
+        for(int el=1;el<weight.length; el++){
+            for(int wt=maxWeight; wt>0; wt--){
+                //not pick
+                int notPick= 0+ dp[wt];
+                // pick
+                int pick= Integer.MIN_VALUE;
+                if(weight[el]<=wt) pick= value[el]+ dp[wt-weight[el]];
+                dp[wt]= Math.max(pick, notPick);
+            }
+        }
+        return dp[maxWeight];
+    }
+}

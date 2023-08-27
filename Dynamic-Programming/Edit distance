@@ -1,0 +1,108 @@
+recursive: 
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        return editDistance(len1-1, len2-1, word1, word2);
+    }
+    public int editDistance(int index1, int index2, String word1, String word2){
+        if(index1<0) return index2+1;// adding the extra values
+        if(index2<0) return index1+1;// delete the extra values
+        //match
+        if(word1.charAt(index1)== word2.charAt(index2)){
+            return editDistance(index1-1, index2-1, word1, word2);
+        }
+        //not match
+        int add= 1+ editDistance(index1, index2-1, word1, word2);
+        int delete= 1+ editDistance(index1-1, index2, word1, word2);
+        int replace= 1+ editDistance(index1-1, index2-1, word1, word2);
+        return Math.min(add, Math.min(delete, replace));
+    }
+}
+
+memo:
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        int[][] dp= new int[len1][len2];
+        return editDistance(len1-1, len2-1, word1, word2, dp);
+    }
+    public int editDistance(int index1, int index2, String word1, String word2, int[][] dp){
+        if(index1<0) return index2+1;// adding the extra values
+        if(index2<0) return index1+1;// delete the extra values
+        if(dp[index1][index2]!=0) return dp[index1][index2];
+        //match
+        if(word1.charAt(index1)== word2.charAt(index2)){
+            return dp[index1][index2]= editDistance(index1-1, index2-1, word1, word2, dp);
+        }
+        //not match
+        int add= 1+ editDistance(index1, index2-1, word1, word2, dp);
+        int delete= 1+ editDistance(index1-1, index2, word1, word2, dp);
+        int replace= 1+ editDistance(index1-1, index2-1, word1, word2, dp);
+        return dp[index1][index2]= Math.min(add, Math.min(delete, replace));
+    }
+}
+
+tabulation:
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        int[][] dp= new int[len1+1][len2+1];
+        return editDistance(len1, len2, word1, word2, dp);
+    }
+    public int editDistance(int len1, int len2, String word1, String word2, int[][] dp){
+        for(int i=1; i<=len2; i++) dp[0][i]= i;
+        for(int i=1; i<=len1; i++) dp[i][0]= i;
+        for(int index1=1; index1<=len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(word1.charAt(index1-1)== word2.charAt(index2-1)){
+                    dp[index1][index2]= dp[index1-1][index2-1];
+                }
+                else{
+                    //not match
+                    int add= 1+ dp[index1][index2-1];
+                    int delete= 1+ dp[index1-1][index2];
+                    int replace= 1+ dp[index1-1][index2-1];
+                    dp[index1][index2]= Math.min(add, Math.min(delete, replace));
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+
+space optimization:
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        int[] dp= new int[len2+1];
+        return editDistance(len1, len2, word1, word2, dp);
+    }
+    public int editDistance(int len1, int len2, String word1, String word2, int[] dp){
+        for(int i=1; i<=len2; i++) dp[i]= i;
+        for(int index1=1; index1<=len1; index1++){
+            int[] temp= new int[len2+1];
+            temp[0]= index1;// delete
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(word1.charAt(index1-1)== word2.charAt(index2-1)){
+                    temp[index2]= dp[index2-1];
+                }
+                else{
+                    //not match
+                    int add= 1+ temp[index2-1];
+                    int delete= 1+ dp[index2];
+                    int replace= 1+ dp[index2-1];
+                    temp[index2]= Math.min(add, Math.min(delete, replace));
+                }
+            }
+            dp= temp;
+        }
+        return dp[len2];
+    }
+}
+

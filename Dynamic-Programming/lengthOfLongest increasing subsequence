@@ -1,0 +1,123 @@
+recursion:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        return helper(0, -1, nums);
+    }
+    public int helper(int index, int prevIndex, int[] nums){
+        if(index== nums.length) return 0;
+        //not pick
+        int notPick= 0+ helper(index+1, prevIndex, nums);
+        //pick
+        int pick= Integer.MIN_VALUE;
+        if(prevIndex==-1 || nums[prevIndex]<nums[index]){
+            pick= 1+ helper(index+1, index, nums);
+        }
+        return Math.max(pick, notPick);
+    }
+}
+
+memo:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[][] dp= new int[nums.length][nums.length];
+        return helper(0, -1, nums, dp);
+    }
+    public int helper(int index, int prevIndex, int[] nums, int[][] dp){
+        if(index== nums.length) return 0;
+        if(dp[index][prevIndex+1]!=0) return dp[index][prevIndex+1];
+        //not pick
+        int notPick= 0+ helper(index+1, prevIndex, nums, dp);
+        //pick
+        int pick= Integer.MIN_VALUE;
+        if(prevIndex==-1 || nums[prevIndex]<nums[index]){
+            pick= 1+ helper(index+1, index, nums, dp);
+        }
+        return dp[index][prevIndex+1]= Math.max(pick, notPick);
+    }
+}
+
+tabulation:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n= nums.length;
+        int[][] dp= new int[n+1][n+1];
+        for(int index=n-1; index>=0; index--){
+            for(int prevIndex= index-1; prevIndex>=-1; prevIndex--){
+                //not pick
+                int notPick= 0+ dp[index+1][prevIndex+1];
+                //pick
+                int pick= Integer.MIN_VALUE;
+                if(prevIndex==-1 || nums[prevIndex]<nums[index]){
+                    pick= 1+ dp[index+1][index+1];
+                }
+                dp[index][prevIndex+1]= Math.max(pick, notPick);
+                System.out.print(dp[index][prevIndex+1]+", ");
+            }
+            System.out.println();
+        }
+        return dp[0][0];
+    }
+}
+
+sapce op:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n= nums.length;
+        int[] dp= new int[n+1];
+        for(int index=n-1; index>=0; index--){
+            int[] curr= new int[n+1];
+            for(int prevIndex= index-1; prevIndex>=-1; prevIndex--){
+                //not pick
+                int notPick= 0+ dp[prevIndex+1];
+                //pick
+                int pick= Integer.MIN_VALUE;
+                if(prevIndex==-1 || nums[prevIndex]<nums[index]){
+                    pick= 1+ dp[index+1];
+                }
+                curr[prevIndex+1]= Math.max(pick, notPick);
+            }
+            dp= curr;
+        }
+        return dp[0];
+    }
+}
+
+1d:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n= nums.length;
+        int[] dp= new int[n+1];
+        for(int index=n-1; index>=0; index--){
+            for(int prevIndex= index-1; prevIndex>=-1; prevIndex--){
+                //not pick
+                int notPick= 0+ dp[prevIndex+1];
+                //pick
+                int pick= Integer.MIN_VALUE;
+                if(prevIndex==-1 || nums[prevIndex]<nums[index]){
+                    pick= 1+ dp[index+1];
+                }
+                dp[prevIndex+1]= Math.max(pick, notPick);
+            }
+        }
+        return dp[0];
+    }
+}
+
+algo:
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n= nums.length;
+        int[] dp= new int[n];
+        Arrays.fill(dp, 1);
+        int max=0;
+        for(int i=0; i<n; i++){
+            for(int j=0;j<i; j++){
+                if(nums[j]<nums[i]){
+                    dp[i]= Math.max(dp[i], dp[j]+1);
+                }
+            }
+            max= Math.max(dp[i], max);
+        }
+        return max;
+    }
+}

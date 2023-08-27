@@ -1,0 +1,69 @@
+Recursion
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        return helper(0,0, triangle);
+    }
+    public int helper(int row, int index, List<List<Integer>> triangle){
+        if(row+1==triangle.size()){
+            return triangle.get(row).get(index);
+        }
+        int left= helper(row+1, index, triangle)+ triangle.get(row).get(index);
+        int right= helper(row+1, index+1, triangle)+ triangle.get(row).get(index);
+        return Math.min(left, right);
+    }
+}
+Memorization
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int[][] dp= new int[triangle.size()][triangle.size()];
+        return helper(0,0, triangle, dp);
+    }
+    public int helper(int row, int index, List<List<Integer>> triangle, int[][] dp){
+        if(row+1==triangle.size()){
+            return triangle.get(row).get(index);
+        }
+        if(dp[row][index]!=0) return dp[row][index];
+        int left= helper(row+1, index, triangle, dp)+ triangle.get(row).get(index);
+        int right= helper(row+1, index+1, triangle, dp)+ triangle.get(row).get(index);
+        dp[row][index]=  Math.min(left, right);
+        return dp[row][index]=  Math.min(left, right);
+    }
+}
+Tabulation
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n= triangle.size();
+        int[][] dp= new int[n][n];
+        for(int col=0;col<n; col++){
+            dp[n-1][col]= triangle.get(n-1).get(col);
+        }
+        for(int row= n-2;row>=0; row--){
+            for(int col=0; col<=row; col++){
+                dp[row][col]= Math.min(dp[row+1][col], dp[row+1][col+1])+ triangle.get(row).get(col);
+            }
+        }
+        return dp[0][0];
+    }
+}
+Space optimization
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n= triangle.size();
+        int[] dp= new int[n];
+        for(int col=0;col<n; col++){
+            dp[col]= triangle.get(n-1).get(col);
+        }
+        for(int row= n-2;row>=0; row--){
+            int[] temp= new int[n];
+            for(int col=0; col<=row; col++){
+                temp[col]= Math.min(dp[col], dp[col+1])+ triangle.get(row).get(col);
+            }
+            dp= temp;
+        }
+        return dp[0];
+    }
+}

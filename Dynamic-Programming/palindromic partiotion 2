@@ -1,0 +1,54 @@
+memo:
+class Solution {
+    public int minCut(String s) {
+        int[] dp= new int[s.length()];
+        return helper(0, s.length(), s, dp)-1;
+    }
+    public int helper(int i, int n, String s, int[] dp){
+        if(i==n) return 0;
+        if(dp[i]!=0) return dp[i];
+        int cost= 1000000007;
+        for(int j=i; j<n; j++){
+            if(isPalindrom(i,j,s)){
+                int currCost= 1+ helper(j+1, n, s, dp);
+                cost= Math.min(cost, currCost);
+            }
+        }
+        return dp[i]= cost;
+    }
+    public boolean isPalindrom(int i, int j, String s){
+        while(i<j){
+            if(s.charAt(i)!=s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+tabulation
+class Solution {
+    public int minCut(String s) {
+        int n=s.length();
+        int[] dp= new int[n+1];
+        for(int i= n-1; i>=0; i--){
+            int cost=1000000007;
+            for(int j=i; j<n; j++){
+                if(isPalindrom(i,j,s)){
+                    int currCost= 1+ dp[j+1];
+                    cost= Math.min(cost, currCost);
+                }
+            }
+            dp[i]= cost;
+        }
+        return dp[0]-1;
+    }
+    public boolean isPalindrom(int i, int j, String s){
+        while(i<j){
+            if(s.charAt(i)!=s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}

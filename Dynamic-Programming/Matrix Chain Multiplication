@@ -1,0 +1,70 @@
+recursion:
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int matrixMultiplication(int[] arr , int N) {
+		// Write your code here
+		return chainMultiplication(1, N-1, arr);
+	}
+	public static int chainMultiplication(int i, int j, int[] arr){
+		if(i==j) return 0;
+		int min= 1000000007;
+		for(int k=i; k<j; k++){
+			int steps= (arr[i-1]* arr[k] * arr[j])+ chainMultiplication(i, k, arr)
+						+chainMultiplication(k+1, j, arr);
+			min= Math.min(min, steps);
+		}
+		return min;
+	}
+}
+
+memo:
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int matrixMultiplication(int[] arr , int N) {
+		// Write your code here
+		int[][] dp= new int[N][N];
+		return chainMultiplication(1, N-1, arr, dp);
+	}
+	public static int chainMultiplication(int i, int j, int[] arr, int[][] dp){
+		if(i==j) return 0;
+		int min= 1000000007;
+		if(dp[i][j]!=0) return dp[i][j];
+		for(int k=i; k<j; k++){
+			int steps= (arr[i-1]* arr[k] * arr[j])+ chainMultiplication(i, k, arr, dp)
+						+chainMultiplication(k+1, j, arr, dp);
+			min= Math.min(min, steps);
+		}
+		return dp[i][j]= min;
+	}
+}
+
+tabulation:
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	public static int matrixMultiplication(int[] arr , int N) {
+		// Write your code here
+		int[][] dp= new int[N][N];
+		for(int i=N-1;i>0;i--){
+			for(int j=i+1; j<N; j++){
+				int min= 1000000007;
+				for(int k=i; k<j; k++){
+					int steps= (arr[i-1]* arr[k] * arr[j])+ dp[i][k]+ dp[k+1][j];
+					min= Math.min(min, steps);
+				}
+				dp[i][j]= min;
+			}
+		}
+		return dp[1][N-1];
+	}
+}
+
+
+
+
+

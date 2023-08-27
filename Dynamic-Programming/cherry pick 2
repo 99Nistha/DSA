@@ -1,0 +1,81 @@
+Memo:
+class Solution {
+    public int cherryPickup(int[][] grid) {
+        int col= grid[0].length;
+        int[][][] dp= new int[grid.length][col][col];
+        return helper(0, 0, col-1, grid, col, dp);
+    }
+    public int helper(int row, int col1, int col2, int[][] grid, int col, int[][][] dp){
+        if(col1<0 || col1>col-1 || col2<0 || col2>col-1){
+            return 0;
+        }
+        if(row== grid.length-1){
+            if(col1==col2) return grid[row][col1];
+            else return grid[row][col1]+ grid[row][col2];
+        }
+        if(dp[row][col1][col2]!=0) return dp[row][col1][col2];
+        int maxi= Integer.MIN_VALUE;
+        for(int i=-1;i<=1; i++){
+            for(int j=-1; j<=1; j++){
+                if(col1+i<0 || col1+i>col-1 || col2+j<0 || col2+j>col-1) continue;
+                int val= 0;
+                if(col1!= col2){
+                    val+= grid[row][col2];
+                }
+                val+= grid[row][col1]+ helper(row+1, col1+i, col2+j, grid, col, dp);
+                maxi= Math.max(maxi, val);
+            }
+        }
+        return dp[row][col1][col2]= maxi;
+    }
+}
+
+Tabi\ulation
+class Solution {
+    public int cherryPickup(int[][] grid) {
+        int n= grid.length;
+        int m= grid[0].length;
+        int[][][] dp= new int[n][m][m];
+        for (int j1 = 0; j1 < m; j1++) {
+            for (int j2 = 0; j2 < m; j2++) {
+                if (j1 == j2)
+                    dp[n - 1][j1][j2] = grid[n - 1][j1];
+                else
+                    dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+            }
+        }
+        //Outer Nested Loops for travering DP Array
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j1 = 0; j1 < m; j1++) {
+                for (int j2 = 0; j2 < m; j2++) {
+
+                int maxi = Integer.MIN_VALUE;
+
+                //Inner nested loops to try out 9 options
+                for (int di = -1; di <= 1; di++) {
+                    for (int dj = -1; dj <= 1; dj++) {
+
+                    int ans;
+
+                    if (j1 == j2)
+                        ans = grid[i][j1];
+                    else
+                        ans = grid[i][j1] + grid[i][j2];
+
+                    if ((j1 + di < 0 || j1 + di >= m) ||
+                        (j2 + dj < 0 || j2 + dj >= m))
+
+                        ans += (int) Math.pow(-10, 9);
+                    else
+                        ans += dp[i + 1][j1 + di][j2 + dj];
+
+                    maxi = Math.max(ans, maxi);
+                    }
+                }
+                dp[i][j1][j2] = maxi;
+                }
+            }
+        }
+        return dp[0][0][m - 1];
+    }
+}

@@ -1,0 +1,42 @@
+class Solution {
+    public int minimumMountainRemovals(int[] nums) {
+        //n-  Longest Bitonic Subsequence 
+        int n= nums.length;
+        return (n- longestBitonicSubsequence(nums, n));
+    }
+    public int longestBitonicSubsequence(int[] nums, int n){
+        int max=0;
+        int[] upHill= longestIncreasingSubsequence(nums, n);
+        int[] downHill= longestDecreasingSubsequence(nums, n);
+        for(int i=0;i<n; i++){
+            if(upHill[i]>1 && downHill[i]>1) // we must have the v shape
+            max= Math.max((upHill[i]+ downHill[i]-1), max);
+        }
+        return max;
+    }
+    public int[] longestIncreasingSubsequence(int[] nums, int n){
+        int[] dp= new int[n];
+        Arrays.fill(dp, 1);
+        for(int i=1; i<n; i++){
+            for(int j=0;j<i; j++){
+                if(nums[j]<nums[i] && dp[i]<dp[j]+1){
+                    dp[i]= dp[j]+1;
+                }
+            }
+        }
+        return dp;
+    }
+
+    public int[] longestDecreasingSubsequence(int[] nums, int n){
+        int[] dp= new int[n];
+        Arrays.fill(dp, 1);
+        for(int i=n-2; i>=0; i--){
+            for(int j=i+1;j<n; j++){
+                if(nums[j]<nums[i] && dp[i]<dp[j]+1){
+                    dp[i]= dp[j]+1;
+                }
+            }
+        }
+        return dp;
+    }
+}

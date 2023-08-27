@@ -1,0 +1,89 @@
+recursion:
+static int countWays(int N, String S){
+        // code here
+        return helper(0, N-1, true, S);
+    }
+    static int helper(int i, int j, boolean isTrue, String exp){
+        if(i>j) return 0;
+        if(i==j){
+            if(isTrue) return (exp.charAt(i)=='T')?1:0;
+            else return (exp.charAt(i)=='F')?1:0;
+        }
+        int ways=0;
+        for(int k=i+1; k<j; k+=2){// this will always pick operators
+            int leftTrue= helper(i, k-1, true, exp);
+            int leftFalse= helper(i, k-1, false, exp);
+            int rightTrue= helper(k+1, j, true, exp);
+            int rightFalse= helper(k+1, j, false, exp);
+
+            if(exp.charAt(k)=='&'){
+                if(isTrue){
+                    ways+= (leftTrue* rightTrue);
+                }else{
+                    ways+= ((leftTrue* rightFalse)+(rightTrue* leftFalse)+(leftFalse* rightFalse));
+                }
+            }else if(exp.charAt(k)=='|'){
+                if(isTrue){
+                    ways+= (leftTrue* rightTrue)+ (leftTrue* rightFalse)+ (rightTrue* leftFalse);
+                }else{
+                    ways+= (leftFalse* rightFalse);
+                }
+            }else{
+                if(isTrue){
+                    ways+= (leftTrue* rightFalse)+ (rightTrue* leftFalse);
+                }else{
+                    ways+= (leftFalse* rightFalse)+ (leftTrue* rightTrue);
+                }
+            }
+        }
+        return ways;
+    }
+
+memo:
+class Solution{
+    static int mod= 1003;
+    static int countWays(int N, String S){
+        // code here
+        int[][][] dp= new int[N][N][2];
+        for(int[][] arr: dp){
+            for(int[]a: arr) Arrays.fill(a, -1);
+        }
+        return helper(0, N-1, 1, S, dp);
+    }
+    static int helper(int i, int j, int isTrue, String exp, int[][][] dp){
+        if(i>j) return 0;
+        if(i==j){
+            if(isTrue==1) return (exp.charAt(i)=='T')?1:0;
+            else return (exp.charAt(i)=='F')?1:0;
+        }
+        if(dp[i][j][isTrue]!=-1) return dp[i][j][isTrue];
+        int ways=0;
+        for(int k=i+1; k<j; k+=2){// this will always pick operators
+            int leftTrue= helper(i, k-1, 1, exp, dp);
+            int leftFalse= helper(i, k-1, 0, exp, dp);
+            int rightTrue= helper(k+1, j, 1, exp, dp);
+            int rightFalse= helper(k+1, j, 0, exp, dp);
+
+            if(exp.charAt(k)=='&'){
+                if(isTrue==1){
+                    ways= (ways+(leftTrue* rightTrue)%mod)%mod;
+                }else{
+                    ways= (ways+(leftTrue* rightFalse)%mod+(rightTrue* leftFalse)%mod+(leftFalse* rightFalse)%mod)%mod;
+                }
+            }else if(exp.charAt(k)=='|'){
+                if(isTrue==1){
+                    ways= (ways+ (leftTrue* rightTrue)%mod+ (leftTrue* rightFalse)%mod+ (rightTrue* leftFalse)%mod)%mod;
+                }else{
+                    ways= (ways+(leftFalse* rightFalse)%mod)%mod;
+                }
+            }else{
+                if(isTrue==1){
+                    ways= (ways+ (leftTrue* rightFalse)%mod+ (rightTrue* leftFalse)%mod);
+                }else{
+                    ways= (ways+(leftFalse* rightFalse)%mod+ (leftTrue* rightTrue)%mod)%mod;
+                }
+            }
+        }
+        return dp[i][j][isTrue]= ways%mod;
+    }
+}

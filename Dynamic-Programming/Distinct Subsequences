@@ -1,0 +1,153 @@
+recursive:
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        return disctinctSubsequence(len1-1, len2-1, s, t);
+    }
+    public int disctinctSubsequence(int index1, int index2, String s, String t){
+        if(index2<0) return 1;
+        if(index1<0) return 0;
+        //match-> try both possiblities of taking the value in string s and not taking it
+        if(s.charAt(index1)== t.charAt(index2)){
+            int pickingFromS= disctinctSubsequence(index1-1, index2-1, s, t);
+            int notPickingFromS= disctinctSubsequence(index1-1, index2, s, t);
+            return pickingFromS+ notPickingFromS;
+        }
+        //not matched yet
+        return disctinctSubsequence(index1-1, index2, s, t);
+    }
+}
+
+memo:
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        int[][] dp= new int[len1][len2];
+        return disctinctSubsequence(len1-1, len2-1, s, t, dp);
+    }
+    public int disctinctSubsequence(int index1, int index2, String s, String t, int[][] dp){
+        if(index2<0) return 1;
+        if(index1<0) return 0;
+        if(dp[index1][index2]!=0) return dp[index1][index2];
+        //match-> try both possiblities of taking the value in string s and not taking it
+        if(s.charAt(index1)== t.charAt(index2)){
+            int pickingFromS= disctinctSubsequence(index1-1, index2-1, s, t, dp);
+            int notPickingFromS= disctinctSubsequence(index1-1, index2, s, t, dp);
+            return dp[index1][index2]= pickingFromS+ notPickingFromS;
+        }
+        //not matched yet
+        return dp[index1][index2]= disctinctSubsequence(index1-1, index2, s, t, dp);
+    }
+}
+tabulaton:
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        int[][] dp= new int[len1+1][len2+1];
+        return disctinctSubsequence(len1, len2, s, t, dp);
+    }
+    public int disctinctSubsequence(int len1, int len2, String s, String t, int[][] dp){
+        for(int i=0;i<=len1; i++){
+            dp[i][0]= 1;
+        }
+        for(int index1=1;index1<= len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s.charAt(index1-1)== t.charAt(index2-1)){
+                    int pickFromS= dp[index1-1][index2-1];
+                    int notPickFromS= dp[index1-1][index2];
+                    dp[index1][index2]= pickFromS+ notPickFromS;
+                }else{
+                    dp[index1][index2]= dp[index1-1][index2];
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+
+space opt:
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        int[] dp= new int[len2+1];
+        return disctinctSubsequence(len1, len2, s, t, dp);
+    }
+    public int disctinctSubsequence(int len1, int len2, String s, String t, int[] dp){
+        dp[0]= 1;
+        for(int index1=1;index1<= len1; index1++){
+            int[] temp= new int[len2+1];
+            temp[0]= 1;
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s.charAt(index1-1)== t.charAt(index2-1)){
+                    int pickFromS= dp[index2-1];
+                    int notPickFromS= dp[index2];
+                    temp[index2]= pickFromS+ notPickFromS;
+                }else{
+                    temp[index2]= dp[index2];
+                }
+            }
+            dp= temp;
+        }
+        return dp[len2];
+    }
+}
+
+1d:
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        int[] dp= new int[len2+1];
+        return disctinctSubsequence(len1, len2, s, t, dp);
+    }
+    public int disctinctSubsequence(int len1, int len2, String s, String t, int[] dp){
+        int prev=1;
+        for(int index1=1;index1<= len1; index1++){
+            prev=1;
+            for(int index2=1; index2<=len2; index2++){
+                if(s.charAt(index1-1)== t.charAt(index2-1)){
+                    int pickFromS= prev;
+                    int notPickFromS= dp[index2];
+                    prev= dp[index2];
+                    dp[index2]= pickFromS+ notPickFromS;
+                }else{
+                    prev= dp[index2];
+                    dp[index2]= dp[index2];
+                }
+            }
+        }
+        return dp[len2];
+    }
+}
+
+1d with no extra variable
+class Solution {
+    public int numDistinct(String s, String t) {
+        int len1= s.length();
+        int len2= t.length();
+        int[] dp= new int[len2+1];
+        return disctinctSubsequence(len1, len2, s, t, dp);
+    }
+    public int disctinctSubsequence(int len1, int len2, String s, String t, int[] dp){
+        dp[0]= 1;
+        for(int index1=1;index1<= len1; index1++){
+            for(int index2=len2; index2>=1; index2--){
+                //match
+                if(s.charAt(index1-1)== t.charAt(index2-1)){
+                    int pickFromS= dp[index2-1];
+                    int notPickFromS= dp[index2];
+                    dp[index2]= pickFromS+ notPickFromS;
+                }else{
+                    dp[index2]= dp[index2];
+                }
+            }
+        }
+        return dp[len2];
+    }
+}

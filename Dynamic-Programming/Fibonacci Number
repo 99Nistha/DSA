@@ -1,0 +1,68 @@
+Memorisation
+here we will use a DP array to store the values for which we already have caluclate teh vlaues int he past
+
+Complexity
+Time complexity: O(N), bcz the fucntions are called linearly fib(n)-> fib(n-1)-> fib(n-2)->......
+
+Space complexity:
+O(N) space for dp Array, and O(N) for recusrsive auxillary space-> O(N)
+
+Code
+
+class Solution {
+    public int fib(int n) {
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, -1);
+        return helper(dp, n);
+    }
+    public int helper(int[] dp, int n){
+        if(n<=1) return n;
+        if(dp[n]!=-1) return dp[n];
+        return dp[n]= helper(dp, n-1)+ helper(dp, n-2);
+    }
+}
+Tabulation
+go from basecase to required solution, but do not use recursion
+
+Complexity
+Time complexity: O(N), bcz the fucntions are called linearly fib(n)-> fib(n-1)-> fib(n-2)->......
+
+Space complexity:
+O(N) space for dp Array -> O(N), this time there will be no auxillary space
+
+Code
+class Solution {
+    public int fib(int n) {
+        int[] dp = new int[n+1];
+        dp[0]=0;
+        if(n!=0) dp[1]=1;
+        for(int i=2;i<=n; i++){
+            dp[i]= dp[i-1]+dp[i-2];
+        }
+        return dp[n];
+    }
+}
+Remove the space
+How to remove the space all together, just use 2 variable as prev and prev2, and keep on updating your curr sol
+
+Complexity
+Time complexity: O(N), loop is running n times
+
+Space complexity:
+No space at all , O(1)
+
+Code
+class Solution {
+    public int fib(int n) {
+        if(n<=1) return n;
+        int prev=1;
+        int prev2=0;
+        int sol=0;
+        for(int i=2;i<=n; i++){
+            sol= prev+prev2;
+            prev2= prev;
+            prev= sol;
+        }
+        return sol;
+    }
+}

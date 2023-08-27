@@ -1,0 +1,116 @@
+recursion
+
+public class Solution {
+	public static int countPartitions(int n, int d, int[] arr) {
+		// Write your code here.
+		int sum=0;
+		for(int i: arr) sum+= i;
+		if(d>sum || (sum-d)%2!=0) return 0;
+		return countEqualToSum(arr, (sum-d)/2, n-1);
+	}
+	public static int countEqualToSum(int[] arr, int target, int index){
+		if(index==0){
+			if(target==0 && arr[0]==0) return 2;
+			if(target==0) return 1;
+			if(arr[index]==target) return 1;
+			else return 0;
+		}
+		//not pick
+		int notPick= countEqualToSum(arr, target, index-1);
+		//pick
+		int pick=0;
+		if(arr[index]<=target) pick= countEqualToSum(arr, target- arr[index], index-1);
+		return pick+ notPick;
+	}
+}
+TC: 2^n //pick and not pick-> 2 * 2* 2...........2
+SC: O(n) stack space
+
+Memorization
+public class Solution {
+	public static int countPartitions(int n, int d, int[] arr) {
+		// Write your code here.
+		int sum=0;
+		for(int i: arr) sum+= i;
+		if(d>sum || (sum-d)%2!=0) return 0;
+		int target= (sum-d)/2;
+		int[][] dp= new int[n][target+1];
+		return countEqualToSum(arr, target, n-1, dp);
+	}
+	public static int countEqualToSum(int[] arr, int target, int index, int[][] dp){
+		if(index==0){
+			if(target==0 && arr[0]==0) return 2;
+			if(target==0) return 1;
+			if(arr[index]==target) return 1;
+			else return 0;
+		}
+		if(dp[index][target]!=0) return dp[index][target];
+		//not pick
+		int notPick= countEqualToSum(arr, target, index-1, dp);
+		//pick
+		int pick=0;
+		if(arr[index]<=target) pick= countEqualToSum(arr, target- arr[index], index-1, dp);
+		return dp[index][target]= pick+ notPick;
+	}
+}
+TC: n*target // uniquely, how many times the function will be called
+SC: n*target+ o(n) stack space
+
+tabulation
+
+public class Solution {
+	public static int countPartitions(int n, int d, int[] arr) {
+		// Write your code here.
+		int m=1000000007;
+		int sum=0;
+		for(int i: arr) sum+= i;
+		if(d>sum || (sum-d)%2!=0) return 0;
+		int target= (sum-d)/2;
+		int[][] dp= new int[n][target+1];
+
+		dp[0][0]=1;
+		if(arr[0]<=target) dp[0][arr[0]]+= 1;
+
+		for(int row=1;row<n; row++){
+			for(int col=0; col<=target; col++){
+				int notPick= dp[row-1][col];
+				int pick=0;
+				if(arr[row]<=col) pick= dp[row-1][col-arr[row]];
+				dp[row][col]= (pick+ notPick)%m;
+			}
+		}
+		return dp[n-1][target];
+	}
+}
+TC: n*target // uniquely, how many times the function will be called
+SC: n*target
+
+space opt:
+public class Solution {
+	public static int countPartitions(int n, int d, int[] arr) {
+		// Write your code here.
+		int m=1000000007;
+		int sum=0;
+		for(int i: arr) sum+= i;
+		if(d>sum || (sum-d)%2!=0) return 0;
+		int target= (sum-d)/2;
+		int[] dp= new int[target+1];
+
+		dp[0]=1;
+		if(arr[0]<=target) dp[arr[0]]+= 1;
+
+		for(int row=1;row<n; row++){
+			int[] temp= new int[target+1];
+			for(int col=0; col<=target; col++){
+				int notPick= dp[col];
+				int pick=0;
+				if(arr[row]<=col) pick= dp[col-arr[row]];
+				temp[col]= (pick+ notPick)%m;
+			}
+			dp= temp;
+		}
+		return dp[target];
+	}
+}
+TC: n*target // uniquely, how many times the function will be called
+SC: n

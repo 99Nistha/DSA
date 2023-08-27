@@ -1,0 +1,89 @@
+Recursion
+TC: 3^(N*N)
+SC: O(N)[stack space]
+
+Memorization
+
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int min= Integer.MAX_VALUE;
+        int[][] dp= new int[matrix.length][matrix[0].length];
+        for(int i=0;i<matrix[0].length; i++){
+            min= Math.min(min, helper(0, i, matrix, dp));
+        }
+        return min;
+    }
+    public int helper(int row, int col, int[][] matrix, int[][] dp){
+        if(row== matrix.length-1){
+            return matrix[row][col];
+        }
+        if(dp[row][col]!=0) return dp[row][col];
+        int left= Integer.MAX_VALUE;
+        int right= Integer.MAX_VALUE;
+        if(col>0) left= helper(row+1, col-1, matrix, dp);
+        int down= helper(row+1, col, matrix, dp);
+        if(col<matrix[0].length-1) right= helper(row+1, col+1, matrix, dp);
+        return dp[row][col]= Math.min(Math.min(left, down), right)+matrix[row][col];
+    }
+}
+TC: (N*N)
+SC: O(N*N)+ O(N)[stack space]
+
+Tabulation
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int n= matrix.length;
+        int min= Integer.MAX_VALUE;
+        int[][] dp= new int[n][n];
+        for(int i=0;i<n; i++){
+           dp[n-1][i]= matrix[n-1][i];
+        }
+        for(int row=n-2; row>=0; row--){
+            for(int col=0;col<matrix[0].length; col++){
+                 int left= Integer.MAX_VALUE;
+                int right= Integer.MAX_VALUE;
+                if(col>0) left= dp[row+1][col-1];
+                int down= dp[row+1][col];
+                if(col<n-1) right= dp[row+1][col+1];
+                dp[row][col]= Math.min(Math.min(left, down), right)+matrix[row][col];
+            }
+        }
+         for(int i=0;i<n; i++){
+           min= Math.min(dp[0][i], min);
+        }
+        return min;
+    }
+}
+
+TC: (N*N)
+SC: O(N*N)
+
+Sapec optimization
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int n= matrix.length;
+        int min= Integer.MAX_VALUE;
+        int[] dp= new int[n];
+        for(int i=0;i<n; i++){
+           dp[i]= matrix[n-1][i];
+        }
+        for(int row=n-2; row>=0; row--){
+            int[] temp = new int[n];
+            for(int col=0;col<matrix[0].length; col++){
+                int left= Integer.MAX_VALUE;
+                int right= Integer.MAX_VALUE;
+                if(col>0) left= dp[col-1];
+                int down= dp[col];
+                if(col<n-1) right= dp[col+1];
+                temp[col]= Math.min(Math.min(left, down), right)+matrix[row][col];
+            }
+            dp= temp;
+        }
+        for(int i=0;i<n; i++){
+           min= Math.min(dp[i], min);
+        }
+        return min;
+    }
+}
+TC: (N*N)
+SC: O(N)

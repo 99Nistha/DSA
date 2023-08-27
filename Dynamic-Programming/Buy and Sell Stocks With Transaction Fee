@@ -1,0 +1,57 @@
+recursion
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        return helper(0, 1, fee, prices);
+    }
+    public int helper(int index, int state, int fee, int[] prices){
+        if(index== prices.length) return 0;
+        //buy
+        if(state==1){
+            int buyIt= -prices[index]+ helper(index+1, 2, fee, prices);
+            int notBuy= helper(index+1, 1, fee, prices);
+            return Math.max(buyIt, notBuy);
+        }else{
+            int sellIt= prices[index]- fee+ helper(index+1, 1, fee, prices);
+            int notSell= helper(index+1, 2, fee, prices);
+            return Math.max(sellIt, notSell);
+        }
+    }
+}
+
+direct space op:
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        int lastBuy=0;
+        int lastSell=0;
+        for(int index=prices.length-1; index>=0; index--){
+            for(int j=0; j<2; j++){
+                if(j==1){
+                    int buyIt= -prices[index]+ lastSell;
+                    int dontBuy= lastBuy;
+                    lastBuy= Math.max(buyIt, dontBuy); 
+                }else{ //sell
+                    int sellIt= prices[index]- fee + lastBuy;
+                    int dontSell= lastSell;
+                    lastSell= Math.max(sellIt, dontSell); 
+                }
+            }
+        }
+        return lastBuy;
+    }
+}
+
+no memeory:
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        int lastBuy=0;
+        int lastSell=0;
+        for(int index=prices.length-1; index>=0; index--){
+            //buy
+            lastBuy= Math.max(-prices[index]+ lastSell, lastBuy); 
+
+            //sell
+            lastSell= Math.max(prices[index]- fee + lastBuy, lastSell); 
+        }
+        return lastBuy;
+    }
+}

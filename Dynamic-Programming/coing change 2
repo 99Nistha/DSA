@@ -1,0 +1,83 @@
+recursion
+class Solution {
+    public int change(int amount, int[] coins) {
+        return helper(coins.length-1, amount, coins);
+    }
+    public int helper(int index, int amount, int[] coins){
+        if(amount==0) return 0;
+        if(index==0){
+            if(coins[0]== amount) return 1;
+            else return 0;
+        }
+        //not pick
+        int notPick= helper(index-1, amount, coins);
+        //pick
+        int pick=0;
+        if(coins[index]<=amount) pick= 1+ helper(index, amount-coins[index], coins);
+        return pick+notPick;
+    }
+}
+memo:
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[][] dp= new int[coins.length][amount+1];
+        return helper(coins.length-1, amount, coins, dp);
+    }
+    public int helper(int index, int amount, int[] coins, int[][] dp){
+        if(amount==0) return 0;
+        if(index==0){
+            if(coins[0]== amount) return 1;
+            else return 0;
+        }
+        if(dp[index][amount]!=0) return dp[index][amount];
+        //not pick
+        int notPick= helper(index-1, amount, coins, dp);
+        //pick
+        int pick=0;
+        if(coins[index]<=amount) pick= 1+ helper(index, amount-coins[index], coins, dp);
+        return dp[index][amount]= pick+notPick;
+    }
+}
+
+tabulation
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[][] dp= new int[coins.length][amount+1];
+        if(coins[0]<= amount) dp[0][coins[0]]= 1;
+        for(int row=1; row<coins.length; row++){
+            for(int col=1; col<=amount; col++){
+                //not pick
+                int notPick= dp[row-1][col];
+                //pick
+                int pick=0;
+                if(coins[row]<=col) pick= 1+ dp[row][col-coins[row]];
+                dp[row][col]= pick+ notPick;
+            }
+        }
+        return dp[coins.length-1][amount];
+    }
+}
+
+space opt:
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] dp= new int[amount+1];
+        for(int i=0; i<=amount; i++){
+            if(i%coins[0]==0) dp[i]= 1;
+        }
+        for(int row=1; row<coins.length; row++){
+            int[] temp= new int[amount+1];
+            for(int col=0; col<=amount; col++){
+                //not pick
+                int notPick= dp[col];
+                //pick
+                int pick=0;
+                if(coins[row]<=col) pick= temp[col-coins[row]];
+                temp[col]= pick+ notPick;
+            }
+            dp= temp;
+        }
+        return dp[amount];
+    }
+}

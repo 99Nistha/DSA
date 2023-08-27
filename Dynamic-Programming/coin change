@@ -1,0 +1,70 @@
+recursiove
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int count= helper(coins, amount, coins.length-1);
+        if(count>= 1000000007) return -1;
+        return count;
+    }
+    public int helper(int[] coins, int amount, int index){
+        if(index==0){
+            if(coins[0]==0) return 1000000007;
+            if(amount%coins[0]==0) return amount/coins[0];
+            else return 1000000007;
+        }
+        //not pick
+        int notPick= helper(coins, amount, index-1);
+        //pick
+        int pick=Integer.MAX_VALUE;
+        if(coins[index]<=amount) pick= 1+ helper(coins, amount-coins[index], index);
+        return Integer.min(pick, notPick);
+    }
+}
+
+tabulation
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[][] dp= new int[coins.length][amount+1];
+        for(int i=0;i<=amount; i++){
+            if(coins[0]!=0 && i%coins[0]==0) dp[0][i]= i/coins[0];
+            else dp[0][i]= 1000000007;
+        }
+        for(int index=1; index<coins.length; index++){
+            for(int am=1; am<=amount; am++){
+                //not pick
+                int notPick= dp[index-1][am];
+                //pick
+                int pick= Integer.MAX_VALUE;
+                if(coins[index]<=am) pick= 1+ dp[index][am-coins[index]];
+                dp[index][am]= Math.min(notPick, pick); 
+            }
+        }
+        int count= dp[coins.length-1][amount];
+        if(count>=1000000007) return -1;
+        return count;
+    }
+}
+
+space opt: class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp= new int[amount+1];
+        for(int i=0;i<=amount; i++){
+            if(coins[0]!=0 && i%coins[0]==0) dp[i]= i/coins[0];
+            else dp[i]= 1000000007;
+        }
+        for(int index=1; index<coins.length; index++){
+            int[] temp= new int[amount+1];
+            for(int am=1; am<=amount; am++){
+                //not pick
+                int notPick= dp[am];
+                //pick
+                int pick= Integer.MAX_VALUE;
+                if(coins[index]<=am) pick= 1+ temp[am-coins[index]];
+                temp[am]= Math.min(notPick, pick); 
+            }
+            dp= temp;
+        }
+        int count= dp[amount];
+        if(count>=1000000007) return -1;
+        return count;
+    }
+}

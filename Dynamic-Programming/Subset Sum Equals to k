@@ -1,0 +1,94 @@
+Recursion:
+
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        return helper(n-1, k, arr);
+    }
+    public static boolean helper(int index, int target, int[] arr){
+        if(target==0) return true;
+        if(index==0){
+            if(arr[0]==target) return true;
+            return false;
+        }
+        boolean take= false;
+        if(arr[index]<= target) take= helper(index-1, target-arr[index], arr);
+        boolean notTake= helper(index-1, target, arr);
+        return (take || notTake);
+    }
+}
+TC: 2^N
+SC: o(N) Auxilary space
+
+Memorization 
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        int[][] dp= new int[n][k+1];
+        return helper(n-1, k, arr, dp);
+    }
+    public static boolean helper(int index, int target, int[] arr, int[][] dp){
+        if(target==0) return true;
+        if(index==0){
+            if(arr[0]==target) return true;
+            return false;
+        }
+        if(dp[index][target]!=0) return (dp[index][target]==1);
+        boolean take= false;
+        if(arr[index]<= target) take= helper(index-1, target-arr[index], arr, dp);
+        boolean notTake= helper(index-1, target, arr, dp);
+        if((take || notTake)== true) dp[index][target]= 1;
+        if((take || notTake)== false) dp[index][target]= -1;
+        return (take || notTake);
+    }
+}
+
+TC: O(N*K)
+SC: O(N*K)+ O(N) Auxilary space
+
+Tabulation
+
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        boolean[][] dp= new boolean[n][k+1];
+        for(int i=0;i<n; i++){
+            dp[i][0]= true;
+        }
+        if(arr[0]<=k) dp[0][arr[0]]= true;
+        for(int i=1;i<n;i++){
+            for(int j=1; j<=k; j++){
+                boolean notTake= dp[i-1][j];
+                boolean take= false;
+                if(arr[i]<=j) take= dp[i-1][j-arr[i]];
+                dp[i][j]= take||notTake;
+            }
+        }
+        return dp[n-1][k];
+    }
+}
+
+space optimization
+public class Solution {
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        boolean[] dp= new boolean[k+1];
+        dp[0]= true;
+        if(arr[0]<=k) dp[arr[0]]= true;
+        for(int i=1;i<n;i++){
+            boolean[] temp= new boolean[k+1];
+            temp[0]= true;
+            for(int j=1; j<=k; j++){
+                boolean notTake= dp[j];
+                boolean take= false;
+                if(arr[i]<=j) take= dp[j-arr[i]];
+                temp[j]= take||notTake;
+            }
+            dp= temp;
+        }
+        return dp[k];
+    }
+}
+
+
+

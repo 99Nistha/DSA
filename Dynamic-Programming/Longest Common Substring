@@ -1,0 +1,43 @@
+
+public class Solution {
+	public static int lcs(String str1, String str2) {
+		// Write your code here.
+		int len1= str1.length();
+        int len2= str2.length();
+        int[] dp= new int[len2+1];
+		int max=0;
+        for(int index1=1; index1<=len1; index1++){
+            int[] temp= new int[len2+1];
+            for(int index2=1; index2<=len2; index2++){
+                if(str1.charAt(index1-1)==str2.charAt(index2-1)){
+                    temp[index2]= 1+ dp[index2-1];
+                }
+				max= Math.max(temp[index2], max);
+            }
+            dp= temp;
+        }
+        return max;
+	}
+}
+
+
+1d:
+
+public class Solution {
+	public static int lcs(String str1, String str2) {
+		// Write your code here.
+		int len1= str1.length();
+        int len2= str2.length();
+        int[] dp= new int[len2+1];
+		int max=0;
+        for(int index1=1; index1<=len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                if(str1.charAt(index1-1)==str2.charAt(index2-1)){
+                    dp[index2]= 1+ dp[index2-1];
+                }
+				max= Math.max(dp[index2], max);
+            }
+        }
+        return max;
+	}
+}

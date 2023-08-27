@@ -1,0 +1,26 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int i:nums) sum+=i;
+        if(sum%2!=0) return false;
+        return subsetSumOfK(nums, sum/2);
+    }
+    public boolean subsetSumOfK(int[] arr, int target){
+        boolean[] dp= new boolean[target+1];
+        dp[0]= true;
+        if(arr[0]<=target) dp[arr[0]]= true;
+        for(int i=1;i<arr.length; i++){
+            if(dp[target]) return true;
+            boolean[] temp= new boolean[target+1];
+            temp[0]= true;
+            for(int j=1; j<=target; j++){
+                boolean notTake= dp[j];
+                boolean take= false;
+                if(arr[i]<=j) take= dp[j-arr[i]];
+                temp[j]= notTake|| take;
+            }
+            dp= temp;
+        }
+        return dp[target];
+    }
+}

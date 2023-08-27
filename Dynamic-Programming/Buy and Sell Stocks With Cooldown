@@ -1,0 +1,101 @@
+recursive:
+class Solution {
+    public int maxProfit(int[] prices) {
+        return helper(0, 1, prices);
+    }
+    public int helper(int index, int state, int[] prices){
+        if(index>= prices.length) return 0;
+        //buy
+        if(state==1){
+            int buyIt= -prices[index]+ helper(index+1, 2, prices);
+            int notBuy= helper(index+1, 1, prices);
+            return Math.max(buyIt, notBuy);
+        }else{
+            int sellIt= prices[index]+ helper(index+2, 1, prices);
+            int notSell= helper(index+1, 2, prices);
+            return Math.max(sellIt, notSell);
+        }
+    }
+}
+
+memo:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[][] dp= new int[prices.length][2];
+        return helper(0, 1, prices, dp);
+    }
+    public int helper(int index, int state, int[] prices, int[][] dp){
+        if(index>= prices.length) return 0;
+        if(dp[index][state]!=0) return dp[index][state];
+        //buy
+        if(state==1){
+            int buyIt= -prices[index]+ helper(index+1, 0, prices, dp);
+            int notBuy= helper(index+1, 1, prices, dp);
+            return dp[index][state]= Math.max(buyIt, notBuy);
+        }else{
+            int sellIt= prices[index]+ helper(index+2, 1, prices, dp);
+            int notSell= helper(index+1, 0, prices, dp);
+            return dp[index][state]= Math.max(sellIt, notSell);
+        }
+    }
+}
+
+tabulation:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[][] dp= new int[prices.length+2][2];
+        for(int index= prices.length-1; index>=0; index--){
+            for(int state=0; state<=1; state++){
+                if(state==1){
+                    int buyIt= -prices[index]+ dp[index+1][0];
+                    int notBuy= dp[index+1][1];
+                    dp[index][state]= Math.max(buyIt, notBuy);
+                }else{
+                    int sellIt= prices[index]+ dp[index+2][1];
+                    int notSell= dp[index+1][0];
+                    dp[index][state]= Math.max(sellIt, notSell);
+                }
+            }
+        }
+        return dp[0][1];
+    }
+}
+
+space op 1 loop:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[][] dp= new int[prices.length+2][2];
+        for(int index= prices.length-1; index>=0; index--){
+            int buyIt= -prices[index]+ dp[index+1][0];
+            int notBuy= dp[index+1][1];
+            dp[index][1]= Math.max(buyIt, notBuy);
+
+            int sellIt= prices[index]+ dp[index+2][1];
+            int notSell= dp[index+1][0];
+            dp[index][0]= Math.max(sellIt, notSell);
+        }
+        return dp[0][1];
+    }
+}
+
+space op:
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] dp= new int[2];
+        int[] prevToPrev= new int[2];
+        for(int index= prices.length-1; index>=0; index--){
+            int[] curr= new int[2];
+            int buyIt= -prices[index]+ dp[0];
+            int notBuy= dp[1];
+            curr[1]= Math.max(buyIt, notBuy);
+
+            int sellIt= prices[index]+ prevToPrev[1];
+            int notSell= dp[0];
+            curr[0]= Math.max(sellIt, notSell);
+
+            prevToPrev= dp;
+            dp= curr;
+        }
+        return dp[1];
+    }
+}

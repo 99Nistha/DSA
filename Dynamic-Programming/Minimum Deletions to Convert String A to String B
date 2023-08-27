@@ -1,0 +1,47 @@
+Tabulation:
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        return len1+ len2- 2*(longestCommonSubsequece(len1, len2, word1, word2));
+    }
+    public int longestCommonSubsequece(int len1, int len2, String s1, String s2){
+        int[][] dp= new int[len1+1][len2+1];
+        for(int index1=1; index1<=len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s1.charAt(index1-1)== s2.charAt(index2-1)){
+                    dp[index1][index2]= 1+ dp[index1-1][index2-1];
+                }
+                //not match
+                else dp[index1][index2]= Math.max(dp[index1-1][index2], dp[index1][index2-1]);
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+
+space optimization:
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int len1= word1.length();
+        int len2= word2.length();
+        return len1+ len2- 2*(longestCommonSubsequece(len1, len2, word1, word2));
+    }
+    public int longestCommonSubsequece(int len1, int len2, String s1, String s2){
+        int[] dp= new int[len2+1];
+        for(int index1=1; index1<=len1; index1++){
+            int[] temp= new int[len2+1];
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s1.charAt(index1-1)== s2.charAt(index2-1)){
+                    temp[index2]= 1+ dp[index2-1];
+                }
+                //not match
+                else temp[index2]= Math.max(dp[index2], temp[index2-1]);
+            }
+            dp= temp;
+        }
+        return dp[len2];
+    }
+}

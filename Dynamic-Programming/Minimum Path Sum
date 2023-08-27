@@ -1,0 +1,68 @@
+Memorization:
+
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m= grid.length;
+        int n= grid[0].length;
+        int[][] dp= new int[m][n];
+        return helper(m-1,n-1,grid, dp);
+    }
+    public int helper(int m, int n, int[][] grid, int[][]dp){
+        if(m==0 && n==0) return grid[0][0];
+        if(m<0 || n<0) return 200;
+        if(dp[m][n]!=0) return dp[m][n];
+        int up= helper(m-1, n, grid, dp)+ grid[m][n];
+        int left= helper(m, n-1, grid, dp)+ grid[m][n];
+        return dp[m][n]= Math.min(up, left);
+    }
+}
+
+
+------------------------------
+tabulation:
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m= grid.length;
+        int n= grid[0].length;
+        int[][] dp= new int[m][n];
+        for(int i=0;i<m; i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    dp[0][0]= grid[0][0];
+                }else{
+                    int up= Integer.MAX_VALUE;
+                    int left= Integer.MAX_VALUE;
+                    if(i>0) up= dp[i-1][j]+ grid[i][j];
+                    if(j>0) left= dp[i][j-1]+ grid[i][j];
+                    dp[i][j]= Math.min(up, left);
+                }
+            }
+        }
+        return dp[m-1][n-1];
+    }
+}
+-----------------------------
+space optimization
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m= grid.length;
+        int n= grid[0].length;
+        int[] dp= new int[n];
+        for(int i=0;i<m; i++){
+            int[] temp= new int[n];
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    temp[j]= grid[0][0];
+                }else{
+                    int up= Integer.MAX_VALUE;
+                    int left= Integer.MAX_VALUE;
+                    if(i>0) up= dp[j]+ grid[i][j];
+                    if(j>0) left= temp[j-1]+ grid[i][j];
+                    temp[j]= Math.min(up, left);
+                }
+            }
+            dp= temp;
+        }
+        return dp[n-1];
+    }
+}

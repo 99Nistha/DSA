@@ -1,0 +1,85 @@
+//recursive
+class Solution {
+    public int rob(int[] nums) {
+        return helper(nums.length-1, nums);
+    }
+    public int helper(int index, int[] nums){
+        if(index==0){
+            //pick the house at 0
+            return nums[0];
+        }
+        if(index<=0) return 0;
+        //pick this house
+        int pick= nums[index]+helper(index-2, nums);
+        //not pick this house
+        int notPick= 0+ helper(index-1, nums);
+        return Math.max(pick, notPick);
+    }
+}
+
+
+//DP-> memorization-> to overcome overlapping sub problems
+class Solution {
+    public int rob(int[] nums) {
+        int[] dp= new int[nums.length];
+        return helper(nums.length-1, nums, dp);
+    }
+    public int helper(int index, int[] nums, int[] dp){
+        if(index==0){
+            //pick the house at 0
+            return nums[0];
+        }
+        if(index<0) return 0;
+        if(dp[index]!=0) return dp[index];
+        //pick this house
+        int pick= nums[index]+helper(index-2, nums, dp);
+        //not pick this house
+        int notPick= 0+ helper(index-1, nums, dp);
+        return dp[index]= Math.max(pick, notPick);
+    }
+}
+
+TC: o(N)
+SC: O(N)+ o(N)
+
+//Tabulation
+class Solution {
+    public int rob(int[] nums) {
+        int n= nums.length;
+        int[] dp= new int[n];
+        dp[0]=nums[0];
+        int neg=0;
+        for(int i=1; i<n; i++){
+            int pick=0;
+            if(i-2<0) pick= nums[i];
+            else pick= nums[i]+ dp[i-2];
+            int notPick= 0+ dp[i-1];
+            dp[i]= Math.max(pick, notPick);
+        }
+        return dp[n-1];
+    }
+}
+SC is decreased as no stack space due to recursive calls
+
+//space optimization
+
+class Solution {
+    public int rob(int[] nums) {
+        int n= nums.length;
+        int past=nums[0];
+        int prevPast=0;
+        int curr=0;
+        for(int i=1; i<n; i++){
+            int pick=nums[i];
+            if(i>1) pick+= prevPast;
+            int notPick= 0+ past;
+            curr= Math.max(pick, notPick);
+            prevPast= past;
+            past= curr;
+        }
+        return past;
+    }
+}
+
+TC= O(N)
+SC= O(1)

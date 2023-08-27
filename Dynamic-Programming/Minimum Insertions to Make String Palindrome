@@ -1,0 +1,100 @@
+recursive:
+class Solution {
+    public int minInsertions(String s) {
+        return s.length()- longestPalindromicString(s);
+    }
+    public int longestPalindromicString(String s){
+        StringBuilder sb= new StringBuilder(s);
+        String reverserString=  sb.reverse().toString();
+        return longestCommonSubsequece(s.length()-1, reverserString.length()-1, s, reverserString);
+    }
+    public int longestCommonSubsequece(int index1, int index2, String s1, String s2){
+        if(index1<0 || index2<0) return 0;
+        //match
+        if(s1.charAt(index1)==s2.charAt(index2)){
+            return 1+ longestCommonSubsequece(index1-1, index2-1, s1, s2);
+        }
+        //not matching-> max value
+        return Math.max(longestCommonSubsequece(index1-1, index2, s1, s2), longestCommonSubsequece(index1, index2-1, s1, s2));
+    }
+}
+
+memo:
+class Solution {
+    public int minInsertions(String s) {
+        return s.length()- longestPalindromicString(s);
+    }
+    public int longestPalindromicString(String s){
+        StringBuilder sb= new StringBuilder(s);
+        String reverserString=  sb.reverse().toString();
+        int[][] dp= new int[s.length()][reverserString.length()];
+        return longestCommonSubsequece(s.length()-1, reverserString.length()-1, s, reverserString, dp);
+    }
+    public int longestCommonSubsequece(int index1, int index2, String s1, String s2, int[][] dp){
+        if(index1<0 || index2<0) return 0;
+        if(dp[index1][index2]!=0) return dp[index1][index2];
+        //match
+        if(s1.charAt(index1)==s2.charAt(index2)){
+            return 1+ longestCommonSubsequece(index1-1, index2-1, s1, s2, dp);
+        }
+        //not matching-> max value
+        return dp[index1][index2]= Math.max(longestCommonSubsequece(index1-1, index2, s1, s2, dp), longestCommonSubsequece(index1, index2-1, s1, s2, dp));
+    }
+}
+
+tabulation:
+class Solution {
+    public int minInsertions(String s) {
+        return s.length()- longestPalindromicString(s);
+    }
+    public int longestPalindromicString(String s){
+        StringBuilder sb= new StringBuilder(s);
+        String reverserString=  sb.reverse().toString();
+        return longestCommonSubsequece(s.length(), reverserString.length(), s, reverserString);
+    }
+    public int longestCommonSubsequece(int len1, int len2, String s1, String s2){
+        int[][] dp= new int[len1+1][len2+1];
+        for(int index1=1; index1<=len1; index1++){
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s1.charAt(index1-1)== s2.charAt(index2-1)){
+                    dp[index1][index2]= 1+ dp[index1-1][index2-1];
+                }
+                //not match
+                else dp[index1][index2]= Math.max(dp[index1-1][index2], dp[index1][index2-1]);
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+
+space optimzation:
+class Solution {
+    public int minInsertions(String s) {
+        return s.length()- longestPalindromicString(s);
+    }
+    public int longestPalindromicString(String s){
+        StringBuilder sb= new StringBuilder(s);
+        String reverserString=  sb.reverse().toString();
+        return longestCommonSubsequece(s.length(), reverserString.length(), s, reverserString);
+    }
+    public int longestCommonSubsequece(int len1, int len2, String s1, String s2){
+        int[] dp= new int[len2+1];
+        for(int index1=1; index1<=len1; index1++){
+            int[] temp= new int[len2+1];
+            for(int index2=1; index2<=len2; index2++){
+                //match
+                if(s1.charAt(index1-1)== s2.charAt(index2-1)){
+                    temp[index2]= 1+ dp[index2-1];
+                }
+                //not match
+                else temp[index2]= Math.max(dp[index2], temp[index2-1]);
+            }
+            dp= temp;
+        }
+        return dp[len2];
+    }
+}
+
+
+

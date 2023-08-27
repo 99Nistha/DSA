@@ -1,0 +1,58 @@
+recursion:
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        return helper(0, k, arr.length, arr);
+    }
+    public int helper(int index, int k, int n, int[] arr){
+        if(index==n) return 0;
+        int maxi= 0;
+        int maxSum=0;
+        for(int j= index; j<index+k && j<n; j++){
+            maxi= Math.max(maxi, arr[j]);
+            int sum=(maxi*(j-index+1))+ helper(j+1, k, n, arr);
+            maxSum= Math.max(sum, maxSum);
+        }
+        return maxSum;
+    }
+}
+
+memo:
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int n= arr.length;
+        int[] dp= new int[n];
+        return helper(0, k, n, arr, dp);
+    }
+    public int helper(int index, int k, int n, int[] arr, int[] dp){
+        if(index==n) return 0;
+        int maxi= 0;
+        int maxSum=0;
+        if(dp[index]!=0) return dp[index];
+        for(int j= index; j<index+k && j<n; j++){
+            maxi= Math.max(maxi, arr[j]);
+            int sum=(maxi*(j-index+1))+ helper(j+1, k, n, arr, dp);
+            maxSum= Math.max(sum, maxSum);
+        }
+        return dp[index]= maxSum;
+    }
+}
+
+tabulation: class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        int n= arr.length;
+        int[] dp= new int[n+1];
+        for(int index=n-1; index>=0; index--){
+            int maxi= 0;
+            int maxSum=0;
+            for(int j= index; j<index+k && j<n; j++){
+                maxi= Math.max(maxi, arr[j]);
+                int sum=(maxi*(j-index+1))+ dp[j+1];
+                maxSum= Math.max(sum, maxSum);
+            }
+            dp[index]= maxSum;
+        }
+        return dp[0];
+    }
+}
+
+

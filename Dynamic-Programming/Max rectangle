@@ -1,0 +1,43 @@
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int row= matrix.length;
+        int col= matrix[0].length;
+        int[] a= new int[col];
+        int max=0;
+        for(int i=0;i<row; i++){
+            for(int j=0; j<col; j++){
+                if(matrix[i][j]=='1') a[j]+=1;
+                else a[j]=0;
+            }
+            max= Math.max(max, largestRectangleArea(a));
+        }
+        return max;
+    }
+    public int largestRectangleArea(int[] a) {
+        int n= a.length;
+        int[] rs = new int[n]; //index of first right smallest, right to left  loop
+        Stack<Integer> st= new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            while(st.size()!=0 && a[st.peek()]>=a[i]) st.pop();
+            if(st.size()==0)rs[i]=n;
+            else rs[i]= st.peek();
+            st.push(i);
+        }
+
+        int[] ls= new int[n];  //index of first left smallest, left to right loop
+        Stack<Integer> st2= new Stack<>();
+        for(int i=0;i<n;i++){
+            while(st2.size()!=0 && a[st2.peek()]>=a[i]) st2.pop();
+            if(st2.size()==0)ls[i]=-1;
+            else ls[i]= st2.peek();
+            st2.push(i);
+        }
+
+        int max= 0;
+        for(int i=0;i<n;i++){
+            int area= (rs[i]-ls[i]-1)*a[i];
+            max =Math.max(area, max);
+        }
+        return max;
+    }
+}
