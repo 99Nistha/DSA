@@ -1,0 +1,19 @@
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        int currColor= image[sr][sc];
+        int[][] dir= {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        dfs(sr, sc, currColor, color, image, dir);
+        return image;
+    }
+    public void dfs(int sr, int sc, int oldColor, int newColor, int[][] image, int[][] dir){
+        if(sr<0 || sr>=image.length || sc<0 || sc>=image[0].length || image[sr][sc]!=oldColor || image[sr][sc]==newColor) return;
+        image[sr][sc]= newColor;
+        for(int[] d:dir){
+            dfs(sr+d[0], sc+d[1], oldColor, newColor, image, dir);
+        }
+        return;
+    }
+}
+
+TC: O(N*N)*4
+SCL=: O(8)+ O(N*N)

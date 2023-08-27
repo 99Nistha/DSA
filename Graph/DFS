@@ -1,0 +1,21 @@
+public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+    // Code here
+    boolean[] visited= new boolean[V];
+    ArrayList<Integer> dfs= new ArrayList<>();
+    visited[0]= true;
+    helper(0, adj, dfs, visited);
+    return dfs;
+}
+public void helper(int index, ArrayList<ArrayList<Integer>> adj, ArrayList<Integer> dfs, boolean[] visited){
+    dfs.add(index);
+    for(int nbr: adj.get(index)){
+        if(!visited[nbr]){
+            visited[nbr]= true;
+            helper(nbr, adj, dfs, visited);
+        }
+    }
+    return;
+}
+
+SC: O(2N)+ O(N)// visited, dfs, aux space
+TC: O(N)+ O(2*E) // node, all the nbrs

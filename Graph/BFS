@@ -1,0 +1,24 @@
+public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+    // Code here
+    boolean[] visited= new boolean[V];
+    Queue<Integer> queue= new LinkedList<>();
+    ArrayList<Integer> bfs= new ArrayList<>();
+    visited[0]=true;
+    queue.add(0);
+    while(!queue.isEmpty()){
+        int node= queue.poll();
+        bfs.add(node);
+        for(int ngb: adj.get(node)){
+            if(!visited[ngb]){
+                queue.add(ngb);
+                visited[ngb]=true;
+            }
+        }
+    }
+    return bfs;
+}
+
+
+
+SC: queue, arrlist, visited: o(3n)
+TC: O(N)+ O(2* total degree)// all nodes + there nbr

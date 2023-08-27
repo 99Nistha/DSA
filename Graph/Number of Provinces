@@ -1,0 +1,39 @@
+static int numProvinces(ArrayList<ArrayList<Integer>> adj, int V) {
+    // create adj list
+    ArrayList<ArrayList<Integer>> ad= new ArrayList<>();
+    for(int i=0; i<V; i++){
+        ad.add(new ArrayList<>());
+    }
+    for(int i=0;i<adj.size(); i++){
+        for(int j=0; j<adj.get(0).size(); j++){
+            if(adj.get(i).get(j)==1 && i!=j){
+                ad.get(i).add(j);
+                ad.get(j).add(i);
+            }
+        }
+    }
+    
+    // num pro
+    boolean[] visited= new boolean[V];
+    int count=0;
+    for(int i=0; i<V; i++){
+        if(!visited[i]){
+            visited[i]= true;
+            count++;
+            dfs(i, ad, visited);
+        }
+    }
+    return count;
+}
+static void dfs(int index, ArrayList<ArrayList<Integer>> adj, boolean[] visited){
+    for(int nbr: adj.get(index)){
+        if(!visited[nbr]){
+            visited[nbr]= true;
+            dfs(nbr, adj, visited);
+        }
+    }
+    return;
+}
+
+SC: O(2N)// visited array, aux space
+TC: O(N)+ O(V+ 2*E)// each node and total nbr

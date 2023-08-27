@@ -1,0 +1,48 @@
+class Solution {
+    // Function to find the number of islands.
+    public int numIslands(char[][] grid) {
+        int[][] dir= {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        int cnt = 0; 
+        for(int row = 0; row < grid.length ; row++) {
+            for(int col = 0; col < grid[0].length ;col++) {
+                // if not visited and is a land
+                if(grid[row][col] == '1'){
+                    grid[row][col]='0';
+                    cnt++; 
+                    bfs(row, col, grid, dir); 
+                }
+            }
+        }
+        return cnt; 
+    }
+
+    private void bfs(int ro, int co, char[][] grid, int[][] dir) {
+        Queue<Pair> q = new LinkedList<Pair>();
+        q.add(new Pair(ro, co)); 
+        // until the queue becomes empty
+        while(!q.isEmpty()) {
+            int row = q.peek().first; 
+            int col = q.peek().second; 
+            q.remove(); 
+            
+            // traverse in the neighbours and mark them if its a land 
+            for(int[] d: dir) {
+                int nrow = row + d[0]; 
+                int ncol = col + d[1]; 
+                // check if neighbour row and column is valid, and is an unvisited land
+                if(nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[0].length && grid[nrow][ncol] == '1') {
+                    grid[nrow][ncol] = '0';
+                    q.add(new Pair(nrow, ncol)); 
+                }
+            }
+        }
+    }
+}
+class Pair {
+    int first;
+    int second; 
+    public Pair(int first, int second) {
+        this.first = first; 
+        this.second = second; 
+    }
+}

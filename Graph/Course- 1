@@ -1,0 +1,31 @@
+public boolean isPossible(int N,int P, int[][] prerequisites)
+    {
+        // Your Code goes here
+        ArrayList<ArrayList<Integer>> adj= new ArrayList<>();
+        for(int i=0;i<N; i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int[] pre: prerequisites){
+            adj.get(pre[0]).add(pre[1]);
+        }
+        int[] indegree= new int[N];
+        int topoLen=0;
+        for(int i=0;i<N; i++){
+            for(int node: adj.get(i)) indegree[node]++;
+        }
+        Queue<Integer> queue= new LinkedList<>();
+        for(int i=0;i<N;i++){
+            if(indegree[i]==0) queue.add(i);
+        }
+        while(!queue.isEmpty()){
+            int node= queue.poll();
+            topoLen++;
+            indegree[node]--;
+            for(int nbr: adj.get(node)){
+                indegree[nbr]--;
+                if(indegree[nbr]==0) queue.add(nbr);
+            }
+        }
+        return topoLen==N;
+    }
+    

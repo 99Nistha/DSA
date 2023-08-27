@@ -1,0 +1,50 @@
+class Pair{
+    int vertex;
+    int weight;
+    public Pair(int vertex, int weight){
+        this.vertex= vertex;
+        this.weight= weight;
+    }
+}
+class Solution {
+
+	public int[] shortestPath(int N,int M, int[][] edges) {
+		//create a adj list
+		ArrayList<ArrayList<Pair>> adj= new ArrayList<>();
+		for(int i=0;i<N; i++) adj.add(new ArrayList<>());
+		for(int[] edge: edges){
+		    adj.get(edge[0]).add(new Pair(edge[1], edge[2]));
+		}
+		
+		//Topo sort
+		boolean[] visited= new boolean[N];
+		Stack<Integer> st= new Stack<>();
+		for(int i=0;i<N; i++){
+		    if(!visited[i]) dfs(i, adj, visited, st);
+		}
+		
+		//save in dist array
+		int[] dist= new int[N];
+		Arrays.fill(dist, (int)(1e9));
+		dist[0]=0;
+		while(!st.isEmpty()){
+		     int node= st.pop();
+		     int distance= dist[node];
+		     for(Pair nbr: adj.get(node)){
+		         dist[nbr.vertex]= Math.min((nbr.weight+ distance), dist[nbr.vertex]);
+		     }
+		}
+		for(int i=0;i<N; i++){
+		    if(dist[i]==1e9) dist[i]=-1;
+		}
+		return dist;
+	}
+	public void dfs(int node, ArrayList<ArrayList<Pair>> adj, boolean[] visited, Stack<Integer> st){
+	    visited[node]= true;
+	    for(Pair nbr: adj.get(node)){
+	        if(!visited[nbr.vertex]) dfs(nbr.vertex, adj, visited, st);
+	    }
+	    st.push(node);
+	    return;
+	}
+}

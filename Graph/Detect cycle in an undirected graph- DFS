@@ -1,0 +1,23 @@
+
+class Solution {
+    // Function to detect cycle in an undirected graph.
+    public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        boolean[] visited= new boolean[V];
+        for(int i=0;i<V; i++){
+            if(!visited[i] && checkForCycle(i, -1, adj, visited)) return true; 
+        }
+        return false;
+    }
+    public boolean checkForCycle(int node, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] visited){
+        visited[node]= true;
+        for(int nbr: adj.get(node)){
+            if(!visited[nbr]){
+            if(checkForCycle(nbr, node, adj, visited)) return true;
+            }else if(nbr!= parent) return true;
+        }
+        return false;
+    }
+}
+//TC: O(N+2E)// all node we visit all its nbrs
+//SC: O(N)+ O(N)// visited and recursion

@@ -1,0 +1,40 @@
+class Solution
+{
+    public int wordLadderLength(String startWord, String targetWord, String[] wordList)
+    {
+        // Code here
+        HashSet<String> set= new HashSet<>();
+        for(String word: wordList) set.add(word);
+        
+        if(!set.contains(targetWord)) return 0;
+        if(startWord.equals(targetWord)) return 0;
+        
+        Queue<String> queue= new LinkedList<>();
+        queue.add(startWord);
+        HashSet<String> visited= new HashSet<>();
+        visited.add(startWord);
+        
+        int count=1;
+        while(!queue.isEmpty()){
+            int size= queue.size();
+            while(size!=0){
+                size--;
+                String node= queue.poll();
+                if(node.equals(targetWord)) return count;
+                for(int i=0;i<node.length(); i++){
+                    for(int j='a'; j<='z'; j++){
+                        char[] word= node.toCharArray();
+                        word[i]= (char)j;
+                        String str= new String(word);
+                        if(set.contains(str) && !visited.contains(str)){
+                            queue.add(str);
+                            visited.add(str);
+                        }
+                    }
+                }
+            }
+            count++;
+        }
+        return 0;
+    }
+}

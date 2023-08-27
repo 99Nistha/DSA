@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        int n= graph.length;
+        int m= graph[0].length;
+        //color==1, or 2
+        int[] visited= new int[n];
+        for(int i=0; i<n; i++){
+            if(visited[i]==0 && !dfs(i, 1, graph, visited)) return false;
+        }
+        return true;
+    }
+    public boolean dfs(int i, int color, int[][] graph, int[] visited){
+        visited[i]= color;
+        if(color==1) color=2;
+        else color=1;
+        for(int nbr: graph[i]){
+            if(visited[nbr]==0){
+                if(!dfs(nbr, color, graph, visited)) return false;
+            }else if(visited[nbr]!= color){ // its visited and have the same color
+                return false;
+            }
+        }
+        return true;
+    }
+}
+// TC: O(N)+ O(N+2E)// Looping+ visiting all nbrs
+// SC: O(N)+ O(N)// visited array+ Aux space
