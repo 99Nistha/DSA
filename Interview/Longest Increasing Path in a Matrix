@@ -1,0 +1,25 @@
+class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        int maxi=0, n=matrix.length, m=matrix[0].length;
+        int[][] dir= {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        int[][] dp= new int[n][m];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                maxi= Math.max(maxi, AllPaths(i, j, matrix, 1, dir, dp));
+            }
+        }
+        return maxi;
+    }
+    public int AllPaths(int i, int j, int[][] matrix, int len, int[][] dir, int[][] dp){
+        if(dp[i][j]!=0) return dp[i][j];
+        int max=0;
+        for(int[] d: dir){
+            int row= i+ d[0];
+            int col= j+ d[1];
+            if(row>=0 && row< matrix.length && col>=0 && col<matrix[0].length && matrix[i][j]<matrix[row][col]){
+                max= Math.max(max, AllPaths(row, col, matrix, len+1, dir, dp));
+            }
+        }
+        return dp[i][j]= max+1;
+    }
+}
