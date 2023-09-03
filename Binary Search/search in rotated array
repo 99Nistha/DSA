@@ -1,0 +1,18 @@
+class Solution
+{
+    int search(int nums[], int low, int high, int target)
+    {
+        while(low<=high){
+            int mid= (low+high)/2;
+            if(nums[mid]==target) return mid;
+            if(nums[low]<=nums[mid]){//left half is forted
+                if(nums[low]<=target && target<=nums[mid]) high= mid-1;//exist in sorted part
+                else low= mid+1;
+             }else{//right is sorted
+                if(nums[mid]<=target && target<=nums[high]) low= mid+1;//exist in sorted part
+                else high= mid-1;
+            }
+        }
+        return -1;
+    }
+}

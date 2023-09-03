@@ -1,0 +1,30 @@
+Iterative:
+class Solution {
+    int binarysearch(int arr[], int n, int k) {
+        // code here
+        int low= 0;
+        int high=n-1;
+        while(low<=high){
+            int mid= (low+high)/2;
+            if(arr[mid]==k) return mid;
+            if(arr[mid]<k) low= mid+1;
+            else high= mid-1;
+        }
+        return -1;
+    }
+}
+
+recursive:
+class Solution {
+    int binarysearch(int arr[], int n, int k) {
+        // code here
+        return search(arr, 0, n-1, k);
+    }
+    int search(int[] arr, int low, int high, int k){
+        if(low>high) return -1;
+        int mid= (low+high)/2;
+        if(arr[mid]==k) return mid;
+        if(arr[mid]<k) return search(arr, mid+1, high, k);
+        else return search(arr, low, mid-1, k);
+    }
+}

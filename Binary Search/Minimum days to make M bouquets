@@ -1,0 +1,41 @@
+//TC: log(Max Day- min day)*n
+//SC: o(1)
+class Solution {
+    public int minDays(int[] bloomDay, int bq, int adj) {
+        int n= bloomDay.length;
+        int day=-1;
+        if(bq*adj >n) return -1;
+        int low= Integer.MAX_VALUE;
+        int high= Integer.MIN_VALUE;
+        for(int val: bloomDay){
+            low= Math.min(low, val);
+            high= Math.max(high, val);
+        }
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(isPossible(bloomDay, bq, adj, mid)){
+                day= mid;
+                high= mid-1;
+            }else{
+                low= mid+1;
+            }
+        }
+        return day;
+    }
+    public boolean isPossible(int[] bloomDay, int bq, int adj, int days){
+        int count=0;
+        int achived=0;
+        for(int bloom: bloomDay){
+            if(bloom<=days) count++;
+            else{
+                achived+=count/adj;
+                count=0;
+                if(achived>=bq) return true;
+            }
+        }
+        achived+=count/adj;
+        if(achived>=bq) return true;
+        return false;
+    }
+}
+
