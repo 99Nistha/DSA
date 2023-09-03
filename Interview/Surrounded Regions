@@ -1,0 +1,52 @@
+class Solution {
+    public void solve(char[][] a) {
+        int n= a.length;
+        int m= a[0].length;
+        int[][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
+        for(int i=0;i<n; i++){
+            for(int j=0;j<m; j++){
+                if((i==0 || j==0 || i==n-1 || j==m-1) && a[i][j]=='O'){
+                    a[i][j]='+';
+                    bfs(i, j, a, dir);
+                }
+            }
+        }
+        for(int i=0;i<n; i++){
+            for(int j=0;j<m; j++){
+                if(a[i][j]=='O'){
+                    a[i][j]='X';
+                }else if(a[i][j]=='+'){
+                    a[i][j]='O';
+                }
+            }
+        }
+        return;
+    }
+    public void bfs(int i, int j, char[][] a, int[][] dir){
+        System.out.println(i+", "+j);
+        Queue<Data> queue= new LinkedList<>();
+        queue.add(new Data(i, j));
+        while(!queue.isEmpty()){
+            Data data= queue.remove();
+            i= data.row;
+            j= data.col;
+            for(int[] d: dir){
+                int row= i+d[0];
+                int col= j+d[1];
+                if(row>=0 && row<a.length && col>=0 && col<a[0].length && a[row][col]=='O'){
+                   a[row][col]='+';
+                   queue.add(new Data(row, col));
+                }
+            }
+        }
+        return;
+    }
+}
+class Data{
+    int row;
+    int col;
+    public Data(int row, int col){
+        this.row= row;
+        this.col= col;
+    }
+}

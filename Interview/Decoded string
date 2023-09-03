@@ -1,0 +1,25 @@
+class Solution {
+    public String decodeString(String s) {
+        Stack<Integer> countStack= new Stack<>();
+        Stack<StringBuilder> wordStack= new Stack<>();
+        StringBuilder word= new StringBuilder();
+        int num=0;
+        for(char ch: s.toCharArray()){
+            if(Character.isDigit(ch)) num= num*10+ ch-'0';
+            else if(Character.isLetter(ch)){
+                word.append(ch);
+            }else if(ch=='['){
+                countStack.push(num);
+                wordStack.push(word);
+                num=0;
+                word= new StringBuilder(); 
+            }else{
+                int count= countStack.pop();
+                StringBuilder duplicateWord= wordStack.pop();
+                duplicateWord.append(word.toString().repeat(count));
+                word= duplicateWord;
+            }
+        }
+        return word.toString();
+    }
+}
