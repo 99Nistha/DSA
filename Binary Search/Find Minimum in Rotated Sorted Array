@@ -1,0 +1,20 @@
+class Solution {
+    public int findMin(int[] nums) {
+        int low= 0;
+        int high= nums.length-1;
+        int min= Integer.MAX_VALUE;
+        while(low<=high){
+            int mid= (low+high)/2;
+            if(nums[low]<=nums[mid]){// left half sorted
+                min= Math.min(nums[low], min); //now left half is sortred, so take the smallest element
+                low= mid+1;
+            }else{// righ half sorted
+                min= Math.min(nums[mid+1], min); //now left half is sortred, so take the smallest element
+                high= mid;
+            }
+        }
+        return min;
+    }
+}
+
+tc: logn
