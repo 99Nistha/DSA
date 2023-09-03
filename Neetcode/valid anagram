@@ -1,0 +1,31 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        char[] sArray= s.toCharArray();
+        char[] tArray= t.toCharArray();
+        Arrays.sort(sArray);
+        Arrays.sort(tArray);
+        s= String.valueOf(sArray);
+        t= String.valueOf(tArray);
+        if(s.equals(t)) return true;
+        return false;
+    }
+}
+  tc: nlgon+ mlogm
+  sc: n+m
+
+// public boolean isAnagram(String s, String t) {
+//     HashMap<Character, Integer> map= new HashMap<>();
+//     for(char ch: s.toCharArray()){
+//         map.put(ch, map.getOrDefault(ch, 0)+1);
+//     }
+//     for(char ch: t.toCharArray()){
+//         map.put(ch, map.getOrDefault(ch, 0)-1);
+//     }
+//     for(int value: map.values()){
+//         if(value!=0) return false;
+//     }
+//     return true;
+// }
+
+tc: n+m
+sc: n+m
