@@ -1,0 +1,45 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> groupedAnagrams= new ArrayList<>();
+        HashMap<String, List<String>> map= new HashMap<>();
+        for(String current: strs){ //eat
+            char[] ch= current.toCharArray();
+            Arrays.sort(ch);
+            String sorted= new String(ch);//aet
+            
+            if(!map.containsKey(sorted)){
+                map.put(sorted, new ArrayList<String>());
+            }
+            map.get(sorted).add(current);
+        }
+        groupedAnagrams.addAll(map.values());
+        return groupedAnagrams;
+    }
+}
+// tc: m.nlogn// m string, and each of len n-> nlog to sort
+// sc: o(m)// set in map
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> list= new ArrayList<>();
+        HashMap<String, List<String>> map= new HashMap<>();
+        for(String st: strs){
+            int[] count= new int[26];
+            for(char ch: st.toCharArray()){
+                count[ch-'a']++;
+            }
+            String set="";
+            for(int i=0; i<26; i++){
+                if(count[i]!=0) set+= String.valueOf(count[i])+(char)('a'+i)+", ";
+            }
+            if(!map.containsKey(set)) map.put(set, new ArrayList<>());
+            map.get(set).add(st);
+        }
+        for(List<String> values: map.values()){
+            list.add(values);
+        }
+        return list;
+    }
+}
+// tc: o(m*n*26)
+//sc: o(m)
