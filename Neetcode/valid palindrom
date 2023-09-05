@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isPalindrome(String s) {
+        int start=0;
+        int end= s.length()-1;
+        while(end>start){
+            char st= s.charAt(start);
+            char en= s.charAt(end);
+            if(!isAlphaNumeric(st)){
+                start++;
+                continue;
+            }
+            if(!isAlphaNumeric(en)){
+                end--;
+                continue;
+            }
+            if(Character.toLowerCase(st)==Character.toLowerCase(en)){
+                end--;
+                start++;
+            }else return false;
+        }
+        return true;
+    }
+    public boolean isAlphaNumeric(char ch){
+        if((48<= ch && ch<=57)|| (65<=ch && ch<=90) || (97<=ch && ch<=122)) return true;
+        return false;
+    }
+}
+//tc: o(n);
