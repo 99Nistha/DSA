@@ -1,0 +1,50 @@
+class Solution {
+    public int trap(int[] height) {
+        // min(l,r)-height[i]
+        int n= height.length;
+        int[] left= new int[n];
+        int maxLeft=0;
+        int[] right= new int[n];
+        int maxRight=0;
+        for(int i=0; i<n; i++){
+            maxLeft= Math.max(maxLeft, height[i]);
+            left[i]= maxLeft;
+        }
+        for(int i=n-1; i>=0; i--){
+            maxRight= Math.max(maxRight, height[i]);
+            right[i]= maxRight;
+        }
+        int count=0;
+        for(int i=0; i<n; i++){
+            count+=Math.min(left[i], right[i])- height[i];
+        }
+        return count;
+    }
+}
+tc: o(n)
+sc: o(n)// extra arrays
+--------------------------------------
+
+class Solution {
+    public int trap(int[] height) {
+        int n= height.length;
+        if(n==0) return 0;
+        int low=0, high= n-1;
+        int count=0;
+        int leftMax= height[low];
+        int rightMax= height[high];
+        while(low<high){
+            if(leftMax<rightMax){
+                low++;
+                leftMax= Math.max(leftMax, height[low]);
+                count+= leftMax-height[low];
+            }else{
+                high--;
+                rightMax= Math.max(rightMax, height[high]);
+                count+= rightMax-height[high];
+            }
+        }
+        return count;
+    }
+}
+// tc: o(n)
