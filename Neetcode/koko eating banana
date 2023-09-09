@@ -1,0 +1,23 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int low=0;
+        int high=0;
+        for(int pile: piles){
+            high= Math.max(high, pile);
+        }
+        while(low<=high){
+            int mid= (low+high)/2;
+            if(isPossible(mid, piles, h)) high= mid-1;
+            else low= mid+1;
+        }
+        return low;
+    }
+    public boolean isPossible(int perHour, int[] piles, int h){
+        int count=0;
+        for(int pile:piles){
+            count+= (int)Math.ceil((double)pile/(double)perHour);
+            if(count>h) return false;
+        }
+        return true;
+    }
+}
