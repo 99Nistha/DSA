@@ -1,0 +1,15 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res= new ArrayList<>();
+        helper("(", res, n, 1, 0);
+        return res;
+    }
+    public void helper(String s, List<String> res, int n, int open, int close){
+        if(s.length() ==2*n){
+            res.add(s);
+            return;
+        }
+        if(open<n) helper(s+'(', res, n, open+1, close);
+        if(close<open) helper(s+')', res, n, open, close+1);
+    }
+}
