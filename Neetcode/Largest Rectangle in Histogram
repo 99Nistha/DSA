@@ -1,0 +1,28 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Pair> st= new Stack<>();
+        int area=0;
+        for(int i=0;i<heights.length; i++){
+            int start= i;
+            while(!st.isEmpty() && st.peek().height>heights[i]){
+                Pair set= st.pop();
+                area= Math.max(area, (i-set.index)*set.height);
+                start=set.index;
+            }
+            st.push(new Pair(start,heights[i]));
+        }
+        while(!st.isEmpty()){
+            Pair set= st.pop();
+            area= Math.max(area, (heights.length-set.index)*set.height);
+        }
+        return area;
+    }
+}
+class Pair{
+    int index;
+    int height;
+    public Pair(int index, int height){
+        this.index= index;
+        this.height= height;
+    }
+}
