@@ -1,0 +1,21 @@
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        int len= position.length;
+        if(len==1) return 1;
+        
+        Stack<Double> st= new Stack<>();
+        int[][] combine= new int[len][2];
+        for(int i=0;i<len; i++){
+            combine[i][0]= position[i];
+            combine[i][1]= speed[i];
+        }
+
+        Arrays.sort(combine, (a,b)-> a[0]-b[0]);
+        for(int i=len-1; i>=0; i--){
+            double currTime= (double)(target-combine[i][0])/combine[i][1];
+            if(!st.isEmpty() && currTime <= st.peek()) continue;
+            else st.push(currTime);
+        }
+        return st.size();
+    }
+}
