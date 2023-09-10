@@ -1,0 +1,47 @@
+class WordDictionary {
+    TrieNode node;
+    public WordDictionary() {
+        node= new TrieNode('#');
+    }
+    
+    public void addWord(String word) {
+        TrieNode curr= node;
+        for(char ch: word.toCharArray()){
+            if(curr.children[ch-'a']==null){
+                curr.children[ch-'a']= new TrieNode(ch);
+            }
+            curr= curr.children[ch-'a'];
+        }
+        curr.isWord= true;
+    }
+    public boolean search(String word) {
+        return dfs(0, node, word);
+    }
+    public boolean dfs(int j, TrieNode root, String word) {
+        TrieNode curr= root;
+        for(int i=j;i<word.length(); i++){
+            char ch= word.charAt(i);
+            if(ch=='.'){
+                for(TrieNode child: curr.children){
+                    if(child!=null){
+                        if(dfs(i+1, child, word)) return true;
+                    }
+                }
+                return false;
+            }
+            else if(curr.children[ch-'a']==null) return false;
+            else curr= curr.children[ch-'a'];
+        }
+        return curr.isWord;
+    }
+}
+class TrieNode{
+    char ch;
+    TrieNode[] children;
+    boolean isWord;
+    public TrieNode(char ch){
+        this.ch= ch;
+        this.children= new TrieNode[26];
+        this.isWord= false;
+    }
+}
