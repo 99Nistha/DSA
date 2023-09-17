@@ -1,0 +1,23 @@
+class Solution {
+    int resultLength = 0;
+    public String longestPalindrome(String s) {
+        int strLength = s.length();
+        if (strLength ==1) return s;
+        String result = "";
+        for (int i = 0; i < s.length(); i++) {
+            result= helper(i, i, result, s);
+            result= helper(i, i+1, result, s);
+        }
+        return result;
+    }
+    public String helper(int left, int right, String result, String s){
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            if ((right - left + 1) > resultLength) {
+                result = s.substring(left, right + 1);
+                resultLength = right - left + 1;
+            }
+            left--; right++;
+        }
+        return result;
+    }
+}
