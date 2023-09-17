@@ -1,0 +1,17 @@
+class Solution {
+    public int countSubstrings(String s) {
+        int res=0;
+        for(int i=0;i<s.length(); i++){
+            res+=helper(i, i, s);
+            res+=helper(i, i+1, s);
+        }
+        return res;
+    }
+    public int helper(int l, int r, String s){
+        int res=0;
+        while(l>=0 && r<s.length() && s.charAt(l)==s.charAt(r)){
+            res++; l--; r++;
+        }
+        return res;
+    }
+}
