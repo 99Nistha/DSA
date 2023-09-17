@@ -1,0 +1,25 @@
+class Solution {
+    public int rob(int[] nums) {
+        int rob= 0, rob1=0;
+        for(int num:nums){
+            int temp= Math.max(num+rob, rob1);
+            rob= rob1;
+            rob1= temp;
+        }
+        return rob1;
+    }
+}
+
+
+
+class Solution {
+    public int rob(int[] nums) {
+        int n= nums.length;
+        if(n==1) return nums[0];
+        if(n>=3)nums[n-3]+=nums[n-1];
+        for(int i=n-4; i>=0; i--){
+            nums[i]+= Math.max(nums[i+2], nums[i+3]);
+        }
+        return Math.max(nums[0], nums[1]);
+    }
+}
