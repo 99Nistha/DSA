@@ -1,0 +1,56 @@
+class Solution {
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> res= new ArrayList<>();
+        int[][] dirs= {{1, 0},{-1, 0},{0, 1},{0, -1}};
+
+        TrieNode node= new TrieNode('#');
+        for(String word: words){
+            node.addWord(word);
+        }
+        for(int row= 0; row<board.length; row++){
+            for(int col=0; col<board[0].length; col++){
+                char ch= board[row][col];
+                if(node.children[ch-'a']==null) continue;
+                dfs(row, col, board, res, dirs, node, "");
+            }
+        }
+        return res;
+    }
+
+    public void dfs(int row, int col, char[][] board, List<String> res, int[][] dirs, TrieNode trieNode, String word){
+        if(row<0|| row>=board.length || col<0 || col>=board[0].length || board[row][col]=='-' || trieNode.children[board[row][col]-'a']==null) return;
+        char temp= board[row][col];
+        trieNode = trieNode.children[temp - 'a'];
+
+        if(trieNode.isWord){
+            res.add(word+temp);
+            trieNode.isWord= false;
+        }
+        board[row][col] = '-';
+        for(int[] dir: dirs){
+            dfs(row+dir[0], col+dir[1], board, res, dirs, trieNode, word+ temp);
+        }
+        board[row][col] = temp;
+        return;
+    }
+}
+class TrieNode{
+    char ch;
+    TrieNode[] children;
+    boolean isWord;
+    public TrieNode(char ch){
+        this.ch= ch;
+        this.children= new TrieNode[26];
+        this.isWord= false;
+    }
+    public void addWord(String word){
+        TrieNode currNode= this;
+        for(char ch: word.toCharArray()){
+            if(currNode.children[ch-'a']==null){
+                currNode.children[ch-'a']= new TrieNode(ch);
+            }
+            currNode= currNode.children[ch-'a'];
+        }
+        currNode.isWord= true;
+    }
+}
