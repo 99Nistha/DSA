@@ -1,0 +1,14 @@
+class Solution {
+    public int goodNodes(TreeNode root) {
+        if(root==null) return 0;
+        return helper(root, root.val);
+    }
+    public int helper(TreeNode root, int max){
+        if(root==null) return 0;
+        int res= root.val>=max?1:0;
+        max= Math.max(max, root.val);
+        res+=helper(root.left, max);
+        res+=helper(root.right, max);
+        return res;
+    }
+}
