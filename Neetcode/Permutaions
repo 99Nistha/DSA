@@ -1,0 +1,56 @@
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res= new ArrayList<>();
+        boolean[] freq= new boolean[nums.length];
+        helper(new ArrayList<>(), res, freq, nums);
+        return res;
+    }
+    public void helper(List<Integer> list, List<List<Integer>> res, boolean[] freq, int[] nums){
+        if(list.size()==nums.length){
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        for(int i=0;i<nums.length; i++){
+            if(!freq[i]){
+                freq[i]= true;
+                list.add(nums[i]);
+                helper(list, res, freq, nums);
+                list.remove(list.size()-1);
+                freq[i]= false;
+            }
+        }
+    }
+}
+tc: n!*n
+sc: o(n)+o(n)
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res= new ArrayList<>();
+        getPermutaion(res, nums, 0);
+        return res;
+    }
+    
+    public void getPermutaion(List<List<Integer>> res, int[] nums, int index){
+        if(index==nums.length){
+            List<Integer> list= new ArrayList<>();
+            for(int i=0;i< nums.length;i++){
+                list.add(nums[i]);
+            }
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        for(int i=index;i<nums.length;i++){
+            swap(i, index, nums);
+            getPermutaion(res, nums, index+1);
+            swap(i, index, nums);
+        }
+    }
+    
+    public void swap(int i, int j, int[] nums){
+        int temp= nums[i];
+        nums[i]= nums[j];
+        nums[j]= temp;
+    }
+}
+// sc: o(1)
