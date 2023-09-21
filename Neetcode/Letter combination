@@ -1,0 +1,23 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> res= new ArrayList<>();
+        if(digits==null || digits.length()==0) return res;
+        String[] mapping= new String[]{
+            "0", "1", "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"
+        };
+        getCombination(0, "", digits, mapping, res);
+        return res;
+    }
+    public void getCombination(int index, String curr, String digits, String[] mapping, List<String> res){
+        if(index==digits.length()){
+            res.add(curr);
+            return;
+        } 
+        String currCombo= mapping[digits.charAt(index)-'0'];
+        for(char ch: currCombo.toCharArray()){
+            getCombination(index+1, curr+ch, digits, mapping, res);
+        }
+    }
+}
+//tc: n.4^n
+//sc: n
