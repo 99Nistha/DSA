@@ -1,0 +1,38 @@
+class Solution {
+    HashSet<Integer> column= new HashSet<>();
+    HashSet<Integer> positiveDiagonal= new HashSet<>();
+    HashSet<Integer> negativeDiagonal= new HashSet<>();
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res= new ArrayList<>();
+        char[][] board= new char[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                board[i][j]='.';
+            }
+        }
+        helper(0, board, res);
+        return res;
+    }
+    public void helper(int row, char[][] board, List<List<String>> res){
+        if(row==board.length){
+            List<String> list= new ArrayList<>();
+            for(char[] b: board){
+                list.add(new String(b));
+            }
+            res.add(list);
+            return;
+        }
+        for(int col=0; col<board.length; col++){
+            if(column.contains(col)|| positiveDiagonal.contains(row+col) || negativeDiagonal.contains(row-col)) continue;
+            column.add(col);
+            positiveDiagonal.add(row+col);
+            negativeDiagonal.add(row-col);
+            board[row][col]='Q';
+            helper(row+1, board, res);
+            column.remove(col);
+            positiveDiagonal.remove(row+col);
+            negativeDiagonal.remove(row-col);
+            board[row][col]='.';
+        }
+    }
+}
