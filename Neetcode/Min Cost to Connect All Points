@@ -1,0 +1,33 @@
+
+# Complexity
+- Time complexity: n^2*logn // n^2 to find distance, and logn due to pq
+- Space complexity: n^2 // due to queue
+<!-- Add your space complexity here, e.g. $$O(n)$$ -->
+
+# Code
+```
+class Solution {
+    public int minCostConnectPoints(int[][] points) {
+        HashSet<Integer> visited= new HashSet<>();
+        PriorityQueue<int[]> pq= new PriorityQueue<>((a,b)-> a[0]-b[0]);
+        pq.add(new int[]{0,0});
+        int count=0;
+        while(visited.size()<points.length){
+            int[] curr= pq.remove();
+            int wt= curr[0];
+            int index= curr[1];
+            if(!visited.contains(index)){
+                count+= wt;
+                visited.add(index);
+                for(int i=0; i<points.length;i++){
+                    if(visited.contains(i)) continue;
+                    int currSum= Math.abs(points[index][0]- points[i][0])+
+                                    Math.abs(points[index][1]- points[i][1]);
+                    pq.add(new int[]{currSum, i});
+                }
+            }
+        }
+        return count;
+    }
+}
+```
