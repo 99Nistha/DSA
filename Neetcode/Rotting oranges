@@ -1,0 +1,49 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int ROW=grid.length, COL= grid[0].length;
+        if (grid == null || ROW == 0 || COL == 0) return 0;
+
+        Queue<Pair> queue= new LinkedList<>();
+        int count=0;
+        int[][] dirs= {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
+        for(int i=0;i<ROW; i++){
+            for(int j=0;j<COL; j++){
+                if(grid[i][j]==2) queue.add(new Pair(i, j));
+            }
+        }
+    
+        while(!queue.isEmpty()){
+            int size= queue.size();
+            while(size!=0){
+                size--;
+                Pair curr= queue.remove();
+                for(int[] dir: dirs){
+                    int row= curr.row+dir[0];
+                    int col= curr.col+dir[1];
+                    if(row<ROW && row>=0 && col<COL && col>=0 && grid[row][col]==1){
+                        grid[row][col]=2;
+                        queue.add(new Pair(row, col));
+                    }
+                }
+            }
+            count++;
+        }
+
+        for(int i=0;i<ROW; i++){
+            for(int j=0;j<COL; j++){
+                if(grid[i][j]==1) return -1;
+            }
+        }
+
+        return count > 0 ? count - 1 : 0;
+    }
+}
+class Pair{
+    int row;
+    int col;
+    public Pair(int row, int col){
+        this.row=row;
+        this.col=col;
+    }
+}
