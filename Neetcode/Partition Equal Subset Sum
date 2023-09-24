@@ -1,0 +1,20 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] dp= new int[2];
+        int[] prevToPrev= new int[2];
+        for(int index= prices.length-1; index>=0; index--){
+            int[] curr= new int[2];
+            int buyIt= -prices[index]+ dp[0];
+            int notBuy= dp[1];
+            curr[1]= Math.max(buyIt, notBuy);
+
+            int sellIt= prices[index]+ prevToPrev[1];
+            int notSell= dp[0];
+            curr[0]= Math.max(sellIt, notSell);
+
+            prevToPrev= dp;
+            dp= curr;
+        }
+        return dp[1];
+    }
+}
