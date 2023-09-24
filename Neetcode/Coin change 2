@@ -1,0 +1,56 @@
+class Solution {
+    public int change(int amount, int[] coins) {
+        return dfs(0, amount, coins);
+    }
+    public int dfs(int index, int target, int[] coins){
+        if(target==0){
+            return 1;
+        }
+        if(index==coins.length) return 0;
+        int pick=0;
+        if(coins[index]<=target){
+            pick= dfs(index, target-coins[index], coins);
+        }
+        int notPick =dfs(index+1, target, coins);
+        return pick+notPick;
+    }
+}
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[][] dp= new int[coins.length][amount+1];
+        return dfs(0, amount, coins, dp);
+    }
+    public int dfs(int index, int target, int[] coins, int[][] dp){
+        if(target==0){
+            return 1;
+        }
+        if(index==coins.length) return 0;
+        if(dp[index][target]!=0) return dp[index][target];
+        int pick=0;
+        if(coins[index]<=target){
+            pick= dfs(index, target-coins[index], coins, dp);
+        }
+        int notPick =dfs(index+1, target, coins, dp);
+        return dp[index][target]= pick+notPick;
+    }
+}
+
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[][] dp = new int[coins.length + 1][amount + 1];
+        for (int[] d : dp)
+            d[0] = 1;
+        for (int i = 1; i <= coins.length; i++) {
+            for (int j = 1; j <= amount; j++) {
+                int pick = 0;
+                if (coins[i - 1] <= j) {
+                    pick = dp[i][j - coins[i - 1]];
+                }
+                int notPick = dp[i - 1][j];
+                dp[i][j] = pick + notPick;
+            }
+        }
+        return dp[coins.length][amount];
+    }
+}
