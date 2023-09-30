@@ -1,0 +1,40 @@
+class Solution {
+    public int mostBooked(int n, int[][] meetings) {
+        Arrays.sort(meetings, (a,b) -> (a[0] - b[0]));
+        PriorityQueue<Integer> availableRoom = new PriorityQueue();
+        PriorityQueue<Room> runningMeeting = new PriorityQueue<Room>(
+            (a, b) -> a.endTime == b.endTime ? a.num - b.num : a.endTime - b.endTime
+        );
+        int[] count = new int[n];
+        int res = 0;
+        for (int i=0; i < n; i++) availableRoom.add(i);
+        for (int[] next: meetings) {
+            while (!runningMeeting.isEmpty() && runningMeeting.peek().endTime <= next[0]) {
+                availableRoom.add(runningMeeting.remove().num);
+            }
+            int latestPossibleStartTime = next[0];
+            if (availableRoom.isEmpty()) {
+                Room firstEndingMeeting = runningMeeting.remove();
+                latestPossibleStartTime = firstEndingMeeting.endTime;
+                availableRoom.add(firstEndingMeeting.num);
+            }
+            int room = availableRoom.remove();
+            count[room]++;
+            int meetingInterval = next[1]-next[0];
+            runningMeeting.add(new Room(meetingInterval+latestPossibleStartTime, room));
+            res= Math.max(res, count[room]);
+        }
+        for(int i=0;i<count.length; i++){
+            if(count[i]==res) return i;
+        }
+        return res;
+    }
+}
+class Room {
+    int endTime;
+    int num;
+    public Room(int endTime, int num) {
+        this.endTime = endTime;
+        this.num = num;
+    }
+}
