@@ -1,0 +1,16 @@
+class Solution {
+    public int minDominoRotations(int[] tops, int[] bottoms) {
+        int minSwap= Math.min(numSwap(tops[0], tops, bottoms),numSwap(bottoms[0], tops, bottoms)); 
+        minSwap= Math.min(minSwap, numSwap(tops[0], bottoms, tops));
+        minSwap= Math.min(minSwap, numSwap(bottoms[0], bottoms, tops));
+        return minSwap==Integer.MAX_VALUE?-1:minSwap;
+    }
+    public int numSwap(int target, int[] A, int[] B){
+        int numSwaps=0;
+        for(int i=0;i<A.length; i++){
+            if(target!=A[i] && target!=B[i]) return Integer.MAX_VALUE;
+            if(target!=A[i]) numSwaps++;
+        }
+        return numSwaps;
+    }
+}
