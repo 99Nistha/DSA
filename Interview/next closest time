@@ -1,0 +1,24 @@
+class Solution {
+    public String nextClosestTime(String time) {
+        int minutes= Integer.parseInt(time.split(":")[0])*60;
+        minutes+= Integer.parseInt(time.split(":")[1]);
+        HashSet<Integer> set= new HashSet<>();
+        for(char ch: time.toCharArray()){
+            set.add(ch-'0');
+        }
+        while(true){
+            minutes= (minutes+1)%(24*60);
+            int[] nextTime= {minutes/60/10, minutes/60%10, minutes%60/10, minutes%60%10};
+            boolean isValid= true;
+            for(int next: nextTime){
+                if(!set.contains(next)){
+                    isValid= false;
+                    break;
+                }
+            }
+            if(isValid){
+                return String.format("%02d:%02d", minutes / 60, minutes % 60);
+            }
+        }
+    }
+}
