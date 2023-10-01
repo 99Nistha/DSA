@@ -1,0 +1,16 @@
+class Solution {
+    int maxCon=0;
+    public int longestConsecutive(TreeNode root) {
+        dfs(root, root.val-1, 0);
+        return maxCon;
+    }
+    public void dfs(TreeNode root, int parent, int maxi){
+        if(root==null) return;
+        if(root.val==parent+1){
+            maxi++;
+            maxCon= Math.max(maxCon, maxi);
+        }else maxi=1;
+        dfs(root.left, root.val, maxi);
+        dfs(root.right, root.val, maxi);
+    }
+}
