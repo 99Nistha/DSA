@@ -1,0 +1,17 @@
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+        if(blankSpace(s).equals(blankSpace(t))) return true;
+        return false;
+    }
+    public String blankSpace(String s){
+        Stack<Character> st= new Stack<>();
+        for(char ch: s.toCharArray()){
+            if(ch>=97 && ch<=122){
+                st.push(ch);
+            }else if(!st.isEmpty())st.pop();
+        }
+        StringBuilder sb= new StringBuilder();
+        while(!st.isEmpty()) sb.append(st.pop());
+        return sb.toString();
+    }
+}
