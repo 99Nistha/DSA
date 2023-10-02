@@ -1,0 +1,35 @@
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        int n= intervals.length;
+        int[] start= new int[n];
+        int[] end= new int[n];
+        int i=0;
+        for(int[] interval: intervals){
+            start[i]= interval[0];
+            end[i]= interval[1];
+            i++;
+        }
+        Arrays.sort(start);
+        Arrays.sort(end);
+        int count=0;
+        int maxCount=0;
+        int st=0;
+        int en=0;
+        while(st<n){
+            if(start[st]==end[en]){
+                st++;
+                en++;
+                continue;
+            }
+            if(start[st]<end[en]){
+                count++;
+                st++;
+            }else if(start[st]>end[en]){
+                count--;
+                en++;
+            }
+            maxCount= Math.max(maxCount, count);
+        }
+        return maxCount;
+    }
+}
