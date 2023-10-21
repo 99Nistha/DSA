@@ -1,0 +1,36 @@
+class Solution {
+    public int minReorder(int n, int[][] connections) {
+        ArrayList<ArrayList<Integer>> inAdj= new ArrayList<>();
+        ArrayList<ArrayList<Integer>> outAdj= new ArrayList<>();
+        for(int i=0;i<n;i++){
+           inAdj.add(new ArrayList<>()); 
+           outAdj.add(new ArrayList<>()); 
+        }
+        for(int[] connection: connections){
+            inAdj.get(connection[1]).add(connection[0]);
+            outAdj.get(connection[0]).add(connection[1]);
+        }
+        Queue<Integer> queue= new LinkedList<>();
+        queue.add(0);
+        int count=0;
+        boolean[] visited= new boolean[n];
+        visited[0]= true;
+        while(!queue.isEmpty()){
+            int node= queue.remove();
+            for(int nbr: inAdj.get(node)){
+                if(!visited[nbr]){
+                    visited[nbr]= true;
+                    queue.add(nbr);
+                }
+            }
+            for(int nbr: outAdj.get(node)){
+                if(!visited[nbr]){
+                    visited[nbr]= true;
+                    queue.add(nbr);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+}
