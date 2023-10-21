@@ -1,0 +1,26 @@
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        int n= rooms.size();
+        boolean[] visited= new boolean[n];
+        visited[0]= true;
+        Queue<Integer> queue= new LinkedList<>();
+        queue.add(0);
+        while(!queue.isEmpty()){
+            int node= queue.remove();
+            for(int nbr: rooms.get(node)){
+                if(!visited[nbr]){
+                    visited[nbr]= true;
+                    queue.add(nbr);
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(!visited[i]) return false;
+        }
+        return true;
+    }
+}
+// 1. boolean visited array
+// 2. Oth index is true
+// 3. apply queue, keep on exploring the nbrs
+// 4. if at last all in visited array is true then true, elase false
