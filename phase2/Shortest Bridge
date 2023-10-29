@@ -1,0 +1,54 @@
+class Pair{
+    int row;
+    int col;
+    public Pair(int row, int col){
+        this.row= row;
+        this.col= col;
+    }
+}
+class Solution {
+    Queue<Pair> queue= new LinkedList<>();
+    public int shortestBridge(int[][] grid) {
+        int n= grid.length;
+        int[][] dirs= {{0,1}, {1,0}, {-1,0}, {0,-1}};
+        boolean flag= false;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1 && !flag){
+                    dfs(i, j, grid, n, dirs);
+                    flag= true;
+                }
+            }
+        }
+        int count=0;
+        while(!queue.isEmpty()){
+            int size= queue.size();
+            while(size!=0){
+                size--;
+                Pair node= queue.remove();
+                for(int[] dir: dirs){
+                    int i= node.row+ dir[0];
+                    int j= node.col+ dir[1];
+                    if(i>=0 && j>=0 && i<n && j<n){
+                        if(grid[i][j]==0){
+                            queue.add(new Pair(i,j));
+                            grid[i][j]=-1;
+                        }
+                        if(grid[i][j]==1) return count;
+                    }
+                }
+            }
+            count++;
+        }
+        return -1;
+    }
+    public void dfs(int i, int j, int[][] grid, int n, int[][] dirs){
+        if(i<0 || j<0 || i>=n || j>=n || grid[i][j]!=1) return;
+        grid[i][j]=-1;
+        queue.add(new Pair(i,j));
+        for(int[] dir: dirs){
+            dfs(i+dir[0], j+dir[1], grid, n, dirs);
+        }
+        return;
+    }
+}
