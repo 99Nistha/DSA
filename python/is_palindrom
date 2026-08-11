@@ -1,0 +1,19 @@
+class Solution:
+    def is_palindrom(self, str):
+        if str is None or len(str)<=1:
+            return True
+        left, right=0, len(str)-1
+        while left<right:
+            while left<right and not str[left].isalnum():
+                left+=1
+            while left<right and not str[right].isalnum():
+                right-=1
+            if str[left].lower()!=str[right].lower():
+                return False
+            left+=1
+            right-=1
+        return True
+    
+s= Solution()
+print(s.is_palindrom("q werr !ew$q"))
+print(s.is_palindrom("qwereefwq"))
