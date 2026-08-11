@@ -1,0 +1,13 @@
+class Solution:
+    def reverse_string_in_place(self, str):
+        left, right=0, len(str)-1
+        while left<right:
+           str[left], str[right]= str[right], str[left]
+           left+=1
+           right-=1
+        return str
+
+s= Solution()
+print(s.reverse_string_in_place(['w','r','i','t','e']))
+     
+     
