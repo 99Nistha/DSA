@@ -1,0 +1,12 @@
+class Solution:
+    def two_sum(self, nums, target):
+        seen={}
+        for i, num in enumerate(nums):
+            t= target-num
+            if t in seen:
+                return [seen[t],i]
+            seen[num]=i
+        return []
+
+s=Solution()    
+print(s.two_sum([1,2,5],6))
