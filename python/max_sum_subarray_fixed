@@ -1,0 +1,14 @@
+class Solution:
+    def max_sum_subarray_fixed(self, arr,h):
+        if len(arr)<h:
+            return 0
+        window_sum= sum(arr[:h])
+        max_sum= window_sum
+        
+        for i in range(h, len(arr)):
+            window_sum+= arr[i]- arr[i-h]
+            max_sum= max(max_sum, window_sum)
+        return max_sum
+    
+s= Solution()
+print(s.max_sum_subarray_fixed([2,3,-2,4,5,-2,0,-1,6],3))
