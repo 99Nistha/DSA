@@ -1,0 +1,24 @@
+from collections import defaultdict, Counter
+class Solution:
+    def search_rotated_array(self, arr,t):
+        left, right=0, len(arr)-1
+        while(left<=right):
+            mid= (left+right)//2
+            if arr[mid]==t:
+                return mid
+            if arr[left]<=arr[mid]:
+                if arr[left]<=t<arr[mid]:
+                    right=mid-1
+                else: 
+                    left= mid+1
+            else:
+                if arr[mid]<t<=arr[right]:
+                    left= mid+1
+                else:
+                    right=mid-1
+        return -1
+        
+s= Solution()
+print(s.search_rotated_array([9,10,11,11,16,20,23,23,40,1,1,2,6,6,6,8],9))
+print(s.search_rotated_array([9,10,11,11,16,20,23,23,40,1,1,2,6,6,6,8],6))
+print(s.search_rotated_array([9,10,11,11,16,20,23,23,40,1,1,2,6,6,6,8],1))
