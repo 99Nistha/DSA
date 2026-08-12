@@ -1,0 +1,20 @@
+from collections import defaultdict, Counter
+class Solution:
+    def binary_search_standard(self, arr,t):
+        if arr is None:
+            return -1
+        
+        arr.sort()
+        left, right=0, len(arr)-1
+        while(left<=right):
+            mid= (left+right)//2
+            if arr[mid]==t:
+                return mid
+            elif arr[mid]<t:
+                left=mid+1
+            else:
+                right=mid-1
+        return -1
+        
+s= Solution()
+print(s.binary_search_standard([2,3,5,1,4],1))
