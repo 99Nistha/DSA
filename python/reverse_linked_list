@@ -1,0 +1,29 @@
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val= val
+        self.next= next
+    
+    def __repr__(self):
+        vals=[]
+        curr= self
+        while curr:
+            vals.append(str(curr.val))
+            curr= curr.next
+        return "->".join(vals)
+    
+class Solution:
+    def reverse_linked_list(self, head):
+        prev= None
+        curr= head
+        while curr:
+            temp= curr.next
+            curr.next= prev
+            prev= curr
+            curr= temp
+            
+        return prev
+    
+s=Solution() 
+head= ListNode(1, ListNode(2, ListNode(3, ListNode(4))))
+print(head)
+print(s.reverse_linked_list(head))
