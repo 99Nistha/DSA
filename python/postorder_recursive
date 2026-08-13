@@ -1,0 +1,21 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val= val
+        self.left=left
+        self.right=right
+        
+class Solution:
+    def postorder_recursive(self, node):
+        #left, root, right
+        res=[]
+        def dfs(node):
+            if node:
+               dfs(node.left)
+               dfs(node.right)
+               res.append(node.val)
+        dfs(node)
+        return res
+
+s=Solution()
+l1= TreeNode(1, TreeNode(2), TreeNode(3))
+print(s.postorder_recursive(l1))
