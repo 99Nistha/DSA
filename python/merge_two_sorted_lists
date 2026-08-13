@@ -1,0 +1,35 @@
+class ListNode:
+    def __init__(self, val, next=None):
+        self.val= val
+        self.next=next
+    
+    def __repr__(self):
+        vals=[]
+        curr=self
+        while curr:
+            vals.append(str(curr.val))
+            curr= curr.next
+        return "->".join(vals)
+        
+class Solution:
+    def merge_two_sorted_lists(self, l1, l2):
+        dummy= ListNode(0)
+        tail= dummy
+        
+        while l1 and l2:
+            if l1.val<=l2.val:
+                tail.next= l1
+                l1= l1.next
+            else:
+                tail.next= l2
+                l2= l2.next
+            tail= tail.next
+        
+        tail.next= l1 or l2
+        return dummy.next
+
+s=Solution()
+l1= ListNode(1, ListNode(12, ListNode(13, ListNode(14))))
+l2= ListNode(2, ListNode(3, ListNode(18, ListNode(19))))
+
+print(s.merge_two_sorted_lists(l1, l2))
