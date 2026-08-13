@@ -1,0 +1,21 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val= val
+        self.left=left
+        self.right=right
+        
+class Solution:
+    def preorder_recursive(self, node):
+        #left, root, right
+        res=[]
+        def dfs(node):
+            if node:
+               res.append(node.val)
+               dfs(node.left)
+               dfs(node.right)
+        dfs(node)
+        return res
+
+s=Solution()
+l1= TreeNode(1, TreeNode(2), TreeNode(3))
+print(s.preorder_recursive(l1))
