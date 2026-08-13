@@ -1,0 +1,42 @@
+class ListNode:
+    def __init__(self, val, next=None):
+        self.val= val
+        self.next=next
+    
+    def __repr__(self):
+        vals=[]
+        curr=self
+        while curr:
+            vals.append(str(curr.val))
+            curr= curr.next
+        return "->".join(vals)
+        
+class Solution:
+    def find_cycle_start(self, head):
+        slow= fast= head
+        while fast and fast.next:
+            slow= slow.next
+            fast= fast.next.next
+            if slow==fast:
+                break
+        else:
+            return None
+        
+        slow= head
+        while slow!=fast:
+            slow=slow.next
+            fast= fast.next
+        return slow
+        
+s=Solution()
+n1= ListNode(1)
+n2= ListNode(2)
+n3= ListNode(1)
+n4= ListNode(1)
+
+n1.next = n2
+n2.next = n3
+n3.next = n4
+n4.next = n1
+
+print(s.find_cycle_start(n1).val)
