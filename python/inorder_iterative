@@ -1,0 +1,24 @@
+class TreeNode:
+    def __init__(self, val=0, left= None, right= None):
+        self.val= val
+        self.left= left
+        self.right= right
+    
+class Solution:
+    def inorder_iterative(self,node):
+        result = []
+        stack=[]
+        curr= node
+        #dfs
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr= curr.left
+            curr= stack.pop()
+            result.append(curr.val)
+            curr= curr.right
+        return result
+
+s= Solution()
+node= TreeNode(1,TreeNode(2),TreeNode(3))
+print(s.inorder_iterative(node))
