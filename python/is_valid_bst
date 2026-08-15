@@ -1,0 +1,18 @@
+from collections import deque
+class TreeNode:
+    def __init__(self, val=0, left= None, right= None):
+        self.val= val
+        self.left= left
+        self.right= right
+    
+def is_valid_bst(node):
+    def validate(node, min_value, max_value):
+        if not node:
+            return True
+        if min_value>=node.val or node.val>=max_value:
+            return False
+        return (validate(node.left, min_value, node.val) or (validate(node.right, node.val, max_value)))
+    return validate(node, float('-inf'), float('inf'))
+
+node= TreeNode(1,TreeNode(2),TreeNode(3))
+print(is_valid_bst(node))
