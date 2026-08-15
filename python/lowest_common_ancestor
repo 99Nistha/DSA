@@ -1,0 +1,23 @@
+from collections import deque
+class TreeNode:
+    def __init__(self, val=0, left= None, right= None):
+        self.val= val
+        self.left= left
+        self.right= right
+    
+def lowest_common_ancestor(root, p, q):
+    if not root or root==p or root==q:
+        return root
+    left= lowest_common_ancestor(root.left, p,q)
+    right= lowest_common_ancestor(root.right, p,q)
+    if left and right:
+        return root
+    return left or right
+
+n1 = TreeNode(1)
+n2 = TreeNode(2)
+n5 = TreeNode(5)
+n3 = TreeNode(3, n1, n5)
+n4 = TreeNode(4, n3, n2)
+
+print(lowest_common_ancestor(n4, n1, n5).val)
