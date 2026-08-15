@@ -1,0 +1,28 @@
+from collections import defaultdict, deque
+graph= defaultdict(list)
+
+def build_adjacency_list(edges, ditected=False):
+    for u,v in edges:
+        graph[u].append(v)
+        if not ditected:
+            graph[v].append(u)
+    return graph
+
+def count_connected_components():
+    if start==end:
+        return 0
+    
+    visited= {start}
+    queue= deque([(start,0)])
+    while queue:
+        node,dist= queue.popleft()
+        for nbr in graph[node]:
+            if nbr==end:
+                return dist+1
+            if nbr not in visited:
+                visited.add(nbr)
+                queue.append((nbr, dist+1))
+    return -1
+
+build_adjacency_list([[2,3],[3,1],[3,5],[5,6]])
+print(bfs_shortest_path(1,6))
