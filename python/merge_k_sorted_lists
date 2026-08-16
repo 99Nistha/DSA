@@ -1,0 +1,28 @@
+import heapq
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val= val
+        self.next= next
+    
+def merge_k_sorted_lists(lists):
+    min_heap=[]
+    for i, lst in enumerate(lists):
+        if lst:
+            heapq.heappush(min_heap, (lst.val, i, lst))
+    dummy= ListNode(0)
+    tail= dummy
+
+    while min_heap:
+        val, i, node= heapq.heappop(min_heap)
+        tail.next= node
+        tail= tail.next
+        if node.next:
+            heapq.heappush(min_heap, (node.next.val, i, node.next))
+        
+    return dummy.next
+    
+L1 = ListNode(1, ListNode(4, ListNode(5)))
+L2 = ListNode(1, ListNode(3, ListNode(4)))
+L3 = ListNode(2, ListNode(6))
+print(merge_k_sorted_lists([L1, L2, L3]))
