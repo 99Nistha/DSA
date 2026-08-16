@@ -1,0 +1,37 @@
+class TrieNode:
+    def __init__(self):
+        self.children={}
+        self.is_end= False
+    
+class Trie:
+    def __init__(self):
+        self.root= TrieNode()
+    
+    def insert(self, word):
+        node= self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char]= TrieNode()
+            node= node.children[char]
+        node.is_end=True
+    
+    def search(self, word):
+        node= self._find_node(word)
+        return node is not None and node.is_end
+    
+    def starts_with(self, prefix):
+        return self._find_node(prefix) is not None
+    
+    def _find_node(self, prefix):
+        node= self.root
+        for char in prefix:
+            if char not in node.children:
+                return None
+            node= node.children[char]
+        return node
+
+t = Trie()
+t.insert("apple")
+print(t.search("apple")) # True
+print(t.search("app")) # False
+print(t.starts_with("app")) # True
