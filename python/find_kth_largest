@@ -1,0 +1,13 @@
+from heapq import heappop, heappush, heapify, heappushpop
+
+def find_kth_largest(nums, k):
+    min_heap= nums[:k]
+    heapify(min_heap)
+
+    for num in nums[k:]:
+        if num>min_heap[0]:
+            heappushpop(min_heap, num)
+    
+    return min_heap[0]
+
+print(find_kth_largest([1,2,3,2,5,6,3,8,3],3))
