@@ -1,0 +1,13 @@
+def longest_increasing_subsequence(nums: list[int]) -> int:
+    """Length of LIS. O(n log n) using binary search."""
+    from bisect import bisect_left
+
+    tails = []
+    for num in nums:
+        pos = bisect_left(tails, num)
+        if pos == len(tails):
+            tails.append(num)
+        else:
+            tails[pos] = num
+
+    return len(tails)
