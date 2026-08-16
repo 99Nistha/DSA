@@ -1,0 +1,15 @@
+import heapq
+from collections import Counter
+
+def top_k_frequent(nums, k):
+    freq= Counter(nums)
+    min_heap= []
+
+    for num, occ in freq.items():
+        heapq.heappush(min_heap, (occ,num))
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    
+    return [num for occ, num in min_heap]
+
+print(top_k_frequent([1,2,3,2,5,6,3,8,3],3))
