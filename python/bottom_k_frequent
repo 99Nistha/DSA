@@ -1,0 +1,15 @@
+import heapq
+from collections import Counter
+
+def bottom_k_frequent(nums, k):
+    freq= Counter(nums)
+    max_heap= []
+
+    for num, occ in freq.items():
+        heapq.heappush(max_heap, (-occ,-num))
+        if len(max_heap) > k:
+            heapq.heappop(max_heap)
+    
+    return [-num for occ, num in max_heap]
+
+print(bottom_k_frequent([1,2,3,2,5,6,3,8,3],3))
